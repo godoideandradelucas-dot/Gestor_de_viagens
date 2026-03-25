@@ -2,7 +2,7 @@
 
 ## 📘 Descrição do Projeto
 
-Este projeto foi desenvolvido com fins pedagógicos para alunos do **Curso Profissional de Gestão e Programação de Sistemas Informáticos (GPSI) – 10.º ano**.
+Este projeto foi desenvolvido por um aluno do **Curso Profissional de Gestão e Programação de Sistemas Informáticos (GPSI) – 10.º ano**.
 
 O objetivo principal é demonstrar como implementar operações **CRUD (Create, Read, Update, Delete)** em Python utilizando:
 
@@ -18,16 +18,14 @@ O projeto simula a gestão de um sistema de viagens com três entidades: **Viaja
 
 ## 🎯 Objetivos Pedagógicos
 
-Com este projeto os alunos devem aprender a:
+Com este projeto devemos aprender a:
 
 * organizar código em múltiplos ficheiros Python
 * utilizar dicionários como estrutura de armazenamento
 * implementar operações CRUD
 * validar dados introduzidos pelo utilizador
-* trabalhar com datas em Python usando `datetime`
 * separar lógica de negócio da interface (menu)
 * importar funções entre ficheiros
-* tratar erros com `try/except`
 
 ---
 
@@ -206,8 +204,6 @@ Este projeto permite consolidar:
 * validação de dados com `while`
 * estruturas condicionais (`if/elif/else`)
 * ciclos (`while`, `for`)
-* tratamento de erros (`try/except`)
-* módulo `datetime`
 
 ---
 
