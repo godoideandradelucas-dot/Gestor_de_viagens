@@ -52,8 +52,6 @@ Responsável apenas por:
 * recolher a escolha do utilizador
 * chamar as funções dos módulos viajantes, destino e hotel
 
-Não contém validações nem lógica de negócio.
-
 ---
 
 ### viajantes.py
