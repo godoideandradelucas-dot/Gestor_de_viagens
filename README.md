@@ -219,11 +219,3 @@ Este projeto vai ser usado para:
 * exercícios guiados
 * avaliação prática
 * preparação para projetos maiores
-
----
-
-## 📄 Licença Pedagógica
-
-Projeto desenvolvido exclusivamente para fins educativos no curso **GPSI – 10.º ano**.
-
-Pode ser reutilizado e adaptado livremente pelo professor e alunos.
