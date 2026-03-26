@@ -92,7 +92,7 @@ def validar_cidade():
 
 def validar_tipo():
     tipo = input("Digite o tipo de destino (praia, urbano, montanha, natureza):")
-    while not tipo.isalpha():
+    while not tipo.replace(" ", "").isalpha():
         tipo = input("Digite o tipo de destino(apenas letras):")
     return tipo
 
