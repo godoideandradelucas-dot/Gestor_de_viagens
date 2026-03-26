@@ -182,7 +182,7 @@ python main.py
 4 - Atualizar viajante     9 - Atualizar destino     14 - Atualizar hotel
 5 - Remover viajante       10 - Remover destino      15 - Remover hotel
 
-                                0 - sair
+                                0 - sair 
 ----------------------------------------------------------------------------
 ```
 
