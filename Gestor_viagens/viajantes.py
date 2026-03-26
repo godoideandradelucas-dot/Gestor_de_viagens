@@ -81,7 +81,7 @@ def remover_viajantes():
     print("\n=== REMOVER VIAJANTE ===")
     nome_remover = input("Nome do viajante para remover:")
     for viajante in viajantes:
-        if nome_remover.lower() in viajante["nome"].lower():
+        if nome_remover.lower() == viajante["nome"].lower():
             viajantes.remove(viajante)
             print("Viajante removido com sucesso!")
             return
