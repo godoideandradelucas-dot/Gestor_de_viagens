@@ -70,7 +70,7 @@ def remover_hotel():
     print("\n=== REMOVER HOTEL ===")
     nome_remover = input("Digite o nome do hotel para remover:")
     for hotel in hoteis:
-        if nome_remover.lower() in hotel["nome"].lower():
+        if nome_remover.lower() == hotel["nome"].lower():
             hoteis.remove(hotel)
             print("hotel removido com sucesso!")
             return
