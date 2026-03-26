@@ -13,7 +13,7 @@ O projeto simula a gestão de um sistema de viagens com três entidades: **Viaja
 
 ---
 
-## 🎯 Objetivos Pedagógicos
+## 🎯 Objetivos
 
 Com este projeto devemos aprender a:
 
@@ -199,14 +199,3 @@ Este projeto permite consolidar:
 * validação de dados com `while`
 * estruturas condicionais (`if/elif/else`)
 * ciclos (`while`, `for`)
-
----
-
-## 👨‍🏫 Utilização em Sala de Aula
-
-Este projeto vai ser usado para:
-
-* introdução ao CRUD
-* exercícios guiados
-* avaliação prática
-* preparação para projetos maiores
