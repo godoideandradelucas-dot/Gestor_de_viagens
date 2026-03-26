@@ -2,15 +2,12 @@
 
 ## 📘 Descrição do Projeto
 
-Este projeto foi desenvolvido por um aluno do **Curso Profissional de Gestão e Programação de Sistemas Informáticos (GPSI) – 10.º ano**.
-
 O objetivo principal é demonstrar como implementar operações **CRUD (Create, Read, Update, Delete)** em Python utilizando:
 
 * funções (sem classes)
 * dicionários e listas
 * separação por ficheiros
 * validação de dados
-* menus em terminal
 
 O projeto simula a gestão de um sistema de viagens com três entidades: **Viajante**, **Destino** e **Hotel**.
 
