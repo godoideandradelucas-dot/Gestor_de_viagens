@@ -69,7 +69,7 @@ def remover_destino():
     print("\n=== REMOVER DESTINO ===")
     nome_remover = input("Digite o nome do destino para remover:")
     for destino in destinos:
-        if nome_remover.lower() in destino["pais"].lower():
+        if nome_remover.lower() == destino["pais"].lower():
             destinos.remove(destino)
             print("Destino removido com sucesso!")
             return
