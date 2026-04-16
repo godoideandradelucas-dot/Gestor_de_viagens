@@ -1,6 +1,7 @@
 from destino import adicionar_destino, ver_destinos, consultar_destinos, atualizar_destino, remover_destino
 from hotel import adicionar_hotel, ver_hoteis, consultar_hotel, atualizar_hotel, remover_hotel
 from viajantes import adicionar_viajante, ver_viajantes, consultar_viajantes, atualizar_viajantes, remover_viajantes
+from utils import validar_pais, validar_cidade, validar_tipo, validar_atracoes, validar_hotel, validar_local, validar_preco, validar_tipo_hotel, validar_nome, validar_data, validar_nacionalidade, validar_telefone, validar_email, validar_NIF, validar_interesses, validar_orcamento
 
 def menu():
     while True:
@@ -16,110 +17,197 @@ def menu():
         opcao = input("Escolha uma opção:")
 
         if opcao == "1":
-            return_code = adicionar_viajante()
+            print("\n=== CADASTRAR VIAJANTE ===")
+            nome = input("Digite seu nome:")
+            nome = validar_nome(nome)
+
+            data_nascimento = input("Digite sua data de nascimento(DD/MM/AAAA):")
+            data_nascimento = validar_data(data_nascimento)
+
+            nacionalidade = input("Digite sua nacionalidade:")
+            nacionalidade = validar_nacionalidade(nacionalidade)
+
+            telefone = input("Digite seu telefone:")
+            telefone = validar_telefone(telefone)
+
+            email = input("Digite seu email(@gmail.com - @hotmail.com - @outlook.com):")
+            email = validar_email(email)
+
+            NIF = input("Digite seu NIF:")
+            NIF = validar_NIF(NIF)
+
+            interesses = input("Digite seus interesses(ex: praias, natureza, montanhas):")
+            interesses = validar_interesses(interesses)
+
+            orcamento = input("Digite seu orçamento(€):")
+            orcamento = validar_orcamento(orcamento)
+
+            return_code = adicionar_viajante(nome, data_nascimento, nacionalidade, telefone, email, NIF, interesses, orcamento)
             if return_code[0] == 201:
-                print("Utilizador criado com sucesso.")
+                print("Viajante criado com sucesso.")
+            else:
+                print("Erro: " + return_code[1])
 
         elif opcao == "2":
             return_code = ver_viajantes()
             if return_code[0] == 200:
-                print("Utilizadores listados com sucesso.")
+                print("\n=== LISTA DE VIAJANTES ===")
+                for viajante in return_code[1]:
+                    for chave, valor in viajante.items():
+                        print(chave, ":", valor)
+                    print()
+                print("Viajantes listados com sucesso.")
             else:
-                print("Internal Error: " + return_code[1])
+                print("Erro: " + return_code[1])
 
         elif opcao == "3":
             return_code = consultar_viajantes()
             if return_code[0] == 200:
-                print("Utilizador listado com sucesso.")
+                print("Viajante listado com sucesso.")
             else:
-                print("Internal Error: " + return_code[1])
-
+                print("Erro: " + return_code[1])
 
         elif opcao == "4":
             return_code = atualizar_viajantes()
             if return_code[0] == 200:
-                print("Utilizador atualizado com sucesso.")
+                print("Viajante atualizado com sucesso.")
             else:
-                print("Internal Error: " + return_code[1])
+                print("Erro: " + return_code[1])
 
         elif opcao == "5":
             return_code = remover_viajantes()
             if return_code[0] == 200:
-                print("Utilizador removido com sucesso.")
+                print("Viajante removido com sucesso.")
             else:
-                print("Internal Error: " + return_code[1])
+                print("Erro: " + return_code[1])
+
+#############################################################################################
 
         elif opcao == "6":
-            return_code = adicionar_destino()
+            print("\n=== ADICIONAR DESTINO ===")
+            pais = input("Digite o nome do país:")
+            pais = validar_pais(pais)
+
+            cidade = input("Digite o nome da cidade:")
+            cidade = validar_cidade(cidade)
+
+            tipo = input("Digite o tipo de destino (praia, urbano, montanha, natureza):")
+            tipo = validar_tipo(tipo)
+
+            atracoes = input("Digite as atrações principais(ex: museus, praias, castelos):")
+            atracoes = validar_atracoes(atracoes)
+
+            return_code = adicionar_destino(pais, cidade, tipo, atracoes)
             if return_code[0] == 201:
                 print("Destino criado com sucesso.")
+            else:
+                print("Erro: " + return_code[1])
 
         elif opcao == "7":
             return_code = ver_destinos()
             if return_code[0] == 200:
+                print("\n=== LISTA DE DESTINOS ===")
+                for destino in return_code[1]:
+                    for chave, valor in destino.items():
+                        print(chave, ":", valor)
+                    print()
                 print("Destinos listados com sucesso.")
             else:
-                print("Internal Error: " + return_code[1])
+                print("Erro: " + return_code[1])
 
         elif opcao == "8":
             return_code = consultar_destinos()
             if return_code[0] == 200:
                 print("Destino listado com sucesso.")
             else:
-                print("Internal Error: " + return_code[1])
+                print("Erro: " + return_code[1])
 
         elif opcao == "9":
-            return_code = atualizar_destino()
+            print("\n=== ATUALIZAR DESTINO ===")
+            pais = validar_pais(input("Digite o país: "))
+            cidade = validar_cidade(input("Digite a cidade: "))
+            tipo = validar_tipo(input("Digite o tipo: "))
+            atracoes = validar_atracoes(input("Digite as atrações: "))
+            return_code = atualizar_destino(pais, cidade, tipo, atracoes)
             if return_code[0] == 200:
                 print("Destino atualizado com sucesso.")
             else:
-                print("Internal Error: " + return_code[1])
+
+                print("Erro: " + return_code[1])
 
         elif opcao == "10":
             return_code = remover_destino()
             if return_code[0] == 200:
                 print("Destino removido com sucesso.")
             else:
-                print("Internal Error: " + return_code[1])
+                print("Erro: " + return_code[1])
+
+#############################################################################################
 
         elif opcao == "11":
-            return_code = adicionar_hotel()
+            print("\n=== ADICIONAR HOTEL ===")
+            nome_hotel = input("Digite o nome do hotel:")
+            nome_hotel = validar_hotel(nome_hotel)
+
+            local = input("Digite a localizacao(cidade):")
+            local = validar_local(local)
+
+            preco = input("Digite o preço por noite(€):")
+            preco = validar_preco(preco)
+
+            tipo_hotel = input("Digite o tipo de hospedagem (hotel, pousada, resort):")
+            tipo_hotel = validar_tipo(tipo_hotel)
+
+            return_code = adicionar_hotel(nome_hotel, local, preco, tipo_hotel)
             if return_code[0] == 201:
                 print("Hotel criado com sucesso.")
+            else:
+                print("Erro: " + return_code[1])
 
         elif opcao == "12":
             return_code = ver_hoteis()
             if return_code[0] == 200:
+                print("\n=== LISTA DE HOTÉIS ===")
+                for hotel in return_code[1]:
+                    for chave, valor in hotel.items():
+                        print(chave, ":", valor)
+                    print()
                 print("Hoteis listados com sucesso.")
             else:
-                print("Internal Error: " + return_code[1])
+                print("Erro: " + return_code[1])
 
         elif opcao == "13":
             return_code = consultar_hotel()
             if return_code[0] == 200:
                 print("Hotel listado com sucesso.")
             else:
-                print("Internal Error: " + return_code[1])
+                print("Erro: " + return_code[1])
 
         elif opcao == "14":
-            return_code = atualizar_hotel()
+            print("\n=== ATUALIZAR HOTEL ===")
+            print("Digite os novos dados")
+            nome_hotel = validar_hotel(input("Digite o nome do hotel:"))
+            local = validar_local(input("Digite a localizacao(cidade):"))
+            preco = validar_preco(input("Digite o preço por noite(€):"))
+            tipo_hotel = validar_tipo_hotel(input("Digite o tipo de hospedagem (hotel, pousada, resort):"))
+            return_code = atualizar_hotel(nome_hotel, local, preco, tipo_hotel)
             if return_code[0] == 200:
                 print("Hotel atualizado com sucesso.")
             else:
-                print("Internal Error: " + return_code[1])
+                print("Erro: " + return_code[1])
 
         elif opcao == "15":
             return_code = remover_hotel()
             if return_code[0] == 200:
                 print("Hotel removido com sucesso.")
             else:
-                print("Internal Error: " + return_code[1])
+                print("Erro: " + return_code[1])
 
         elif opcao == "0":
-            print("saindo do sistema...")
+            print("Saindo do sistema...")
             break
         else:
-            print("opção invalida!")
+            print("Opção inválida!")
 
 
 if __name__ == '__main__':
