@@ -1,15 +1,8 @@
-from utils import validar_pais, validar_cidade, validar_tipo, validar_atracoes, isEqual
+from utils import isEqual
 
 destinos = []
 
-def adicionar_destino():
-    print("\n=== ADICIONAR DESTINO ===")
-
-    pais =  validar_pais()
-    cidade = validar_cidade()
-    tipo = validar_tipo()
-    atracoes = validar_atracoes()
-
+def adicionar_destino(pais, cidade, tipo, atracoes):
     destino = {
         "pais": pais,
         "cidade": cidade,
@@ -20,18 +13,11 @@ def adicionar_destino():
     return 201, "Sucesso"
 
 
-
 def ver_destinos():
     if not destinos:
         return 404, "Não existem destinos registados."
 
-    print("\n=== LISTA DE DESTINOS ===")
-    for destino in destinos:
-        for chave, valor in destino.items():
-            print(chave,":",valor)
-        print()
-    return 200, "Sucesso"
-
+    return 200, destinos
 
 
 def consultar_destinos():
@@ -49,7 +35,7 @@ def consultar_destinos():
     for destino in destinos:
         if nome.lower() in destino["pais"].lower():
             for chave, valor in destino.items():
-                print(chave,":",valor)
+                print(chave, ":", valor)
             print()
             encontrado = True
 
@@ -58,7 +44,7 @@ def consultar_destinos():
     return 200, "Sucesso"
 
 
-def atualizar_destino():
+def atualizar_destino(pais, cidade, tipo, atracoes):
     if not destinos:
         return 404, "Não existem destinos registados."
 
@@ -71,10 +57,11 @@ def atualizar_destino():
     for destino in destinos:
         if nome.lower() in destino["pais"].lower():
             print("Digite os novos dados")
-            destino["pais"] = validar_pais()
-            destino["cidade"] = validar_cidade()
-            destino["tipo"] = validar_tipo()
-            destino["atracoes"] = validar_atracoes()
+
+            destino["pais"] = pais
+            destino["cidade"] = cidade
+            destino["tipo"] = tipo
+            destino["atracoes"] = atracoes
 
             return 200, "Sucesso"
     return 404, "Destino não encontrado."
