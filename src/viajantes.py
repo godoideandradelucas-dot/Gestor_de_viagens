@@ -3,18 +3,7 @@ from utils import validar_data, validar_nome, validar_nacionalidade, validar_tel
 viajantes = []
 
 
-def adicionar_viajante():
-    print("\n=== CADASTRAR VIAJANTE ===")
-
-    nome = validar_nome()
-    data_nascimento = validar_data()
-    nacionalidade = validar_nacionalidade()
-    telefone = validar_telefone()
-    email = validar_email()
-    NIF = validar_NIF()
-    interesses = validar_interesses()
-    orcamento = validar_orcamento()
-
+def adicionar_viajante(nome, data_nascimento, nacionalidade, telefone, email, NIF, interesses, orcamento):
     viajante = {
         "nome": nome,
         "data_nascimento": data_nascimento,
@@ -26,19 +15,14 @@ def adicionar_viajante():
         "orcamento": orcamento
     }
     viajantes.append(viajante)
-    return 201, "Sucesso"
+    return 201, viajante
 
 
 def ver_viajantes():
     if not viajantes:
         return 404, "Não existem utilizadores registados."
 
-    print("\n=== LISTA DE VIAJANTES ===")
-    for viajante in viajantes:
-        for chave, valor in viajante.items():
-            print(chave,":",valor,)
-        print()
-    return 200, "Sucesso"
+    return 200, viajantes
 
 
 def consultar_viajantes():
@@ -56,7 +40,7 @@ def consultar_viajantes():
     for viajante in viajantes:
         if nome.lower() in viajante["nome"].lower():
             for chave, valor in viajante.items():
-                print(chave,":",valor)
+                print(chave, ":", valor)
             print()
             encontrado = True
 
@@ -79,14 +63,23 @@ def atualizar_viajantes():
         if nome.lower() in viajante["nome"].lower():
             print("Digite os novos dados")
 
-            viajante["nome"] = validar_nome()
-            viajante["data_nascimento"] = validar_data()
-            viajante["nacionalidade"] = validar_nacionalidade()
-            viajante["telefone"] = validar_telefone()
-            viajante["email"] = validar_email()
-            viajante["NIF"] = validar_NIF()
-            viajante["interesses"] = validar_interesses()
-            viajante["orcamento"] = validar_orcamento()
+            novo_nome = input("Digite o novo nome:")
+            nova_data = input("Digite a nova data de nascimento(DD/MM/AAAA):")
+            nova_nacionalidade = input("Digite a nova nacionalidade:")
+            novo_telefone = input("Digite o novo telefone:")
+            novo_email = input("Digite o novo email:")
+            novo_NIF = input("Digite o novo NIF:")
+            novos_interesses = input("Digite os novos interesses:")
+            novo_orcamento = input("Digite o novo orçamento(€):")
+
+            viajante["nome"] = validar_nome(novo_nome)
+            viajante["data_nascimento"] = validar_data(nova_data)
+            viajante["nacionalidade"] = validar_nacionalidade(nova_nacionalidade)
+            viajante["telefone"] = validar_telefone(novo_telefone)
+            viajante["email"] = validar_email(novo_email)
+            viajante["NIF"] = validar_NIF(novo_NIF)
+            viajante["interesses"] = validar_interesses(novos_interesses)
+            viajante["orcamento"] = validar_orcamento(novo_orcamento)
 
             return 200, "Sucesso"
     return 404, "Utilizador não encontrado."
