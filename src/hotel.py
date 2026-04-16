@@ -1,16 +1,8 @@
-from utils import validar_hotel, validar_local, validar_preco, validar_tipo_hotel, isEqual
+from utils import isEqual
 
 hoteis = []
 
-def adicionar_hotel():
-    print("\n=== ADICIONAR HOTEL ===")
-
-    nome_hotel =  validar_hotel()
-    local = validar_local()
-    preco = validar_preco()
-    tipo_hotel = validar_tipo_hotel()
-
-
+def adicionar_hotel(nome_hotel, local, preco, tipo_hotel):
     hotel = {
         "nome": nome_hotel,
         "local": local,
@@ -25,12 +17,7 @@ def ver_hoteis():
     if not hoteis:
         return 404, "Não existem hoteis registados."
 
-    print("\n=== LISTA DE HOTÉIS ===")
-    for hotel in hoteis:
-        for chave, valor in hotel.items():
-            print(chave,":",valor)
-        print()
-    return 200, "Sucesso"
+    return 200, hoteis
 
 
 def consultar_hotel():
@@ -38,8 +25,7 @@ def consultar_hotel():
         return 404, "Não existem hoteis registados."
 
     print("\n=== CONSULTAR HOTEL ===")
-    nome = input("Nome do hotel para consultar:").strip
-
+    nome = input("Nome do hotel para consultar:").strip()
     if not nome:
         return 400, "Hotel não encontrado."
 
@@ -57,7 +43,7 @@ def consultar_hotel():
     return 200, "Sucesso"
 
 
-def atualizar_hotel():
+def atualizar_hotel(nome_hotel, local, preco, tipo_hotel):
     if not hoteis:
         return 404, "Não existem hoteis registados."
 
@@ -69,11 +55,10 @@ def atualizar_hotel():
 
     for hotel in hoteis:
         if nome.lower() in hotel["nome"].lower():
-            print("Digite os novos dados")
-            hotel["nome"] = validar_hotel()
-            hotel["local"] = validar_local()
-            hotel["preco"] = validar_preco()
-            hotel["tipo"] = validar_tipo_hotel()
+            hotel["nome"] = nome_hotel
+            hotel["local"] = local
+            hotel["preco"] = preco
+            hotel["tipo"] = tipo_hotel
             return 200, "Sucesso"
 
     return 404, "Hotel não encontrado."
