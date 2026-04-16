@@ -156,7 +156,7 @@ def menu():
             preco = validar_preco(preco)
 
             tipo_hotel = input("Digite o tipo de hospedagem (hotel, pousada, resort):")
-            tipo_hotel = validar_tipo(tipo_hotel)
+            tipo_hotel = validar_tipo_hotel(tipo_hotel)
 
             return_code = adicionar_hotel(nome_hotel, local, preco, tipo_hotel)
             if return_code[0] == 201:
