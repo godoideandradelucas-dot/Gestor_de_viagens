@@ -45,8 +45,7 @@ def atualizar_destino(nome_procurar, pais, cidade, tipo, atracoes):
     if not destinos:
         return 404, "Não existem destinos registados."
 
-    nome = input("Digite o nome para atualizar o destino:").strip()
-    if not nome:
+    if not nome_procurar:
         return 400, "Destino não encontrado."
 
     for destino in destinos:
