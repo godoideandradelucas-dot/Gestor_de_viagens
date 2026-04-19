@@ -44,12 +44,10 @@ def consultar_viajantes():
         return 404, "Viajante não encontrado."
     return 200, "Sucesso"
 
-
-def atualizar_viajantes(nome, data_nascimento, nacionalidade, telefone, email, NIF, interesses, orcamento):
+def atualizar_viajantes(nome_procurar, nome, data_nascimento, nacionalidade, telefone, email, NIF, interesses, orcamento):
     if not viajantes:
         return 404, "Não existem utilizadores registados."
 
-    nome_procurar = input("Digite o nome para atualizar o viajante: ").strip()
     if not nome_procurar:
         return 400, "Viajante não encontrado."
 
