@@ -40,22 +40,21 @@ def consultar_hotel():
         return 404, "Hotel não encontrado."
     return 200, "Sucesso"
 
-
-def atualizar_hotel(nome_hotel, local, preco, tipo_hotel):
+def atualizar_hotel(nome_procurar, nome_hotel, local, preco, tipo_hotel):
     if not hoteis:
         return 404, "Não existem hoteis registados."
 
-    nome = input("Digite o nome do hotel para atualizar: ").strip()
-    if not nome:
+    if not nome_procurar:
         return 400, "Hotel não encontrado."
 
     for hotel in hoteis:
-        if nome.lower() in hotel["nome"].lower():
+        if nome_procurar.lower() in hotel["nome"].lower():
             hotel["nome"] = nome_hotel
             hotel["local"] = local
             hotel["preco"] = preco
             hotel["tipo"] = tipo_hotel
             return 200, "Sucesso"
+
     return 404, "Hotel não encontrado."
 
 
