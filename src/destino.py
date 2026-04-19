@@ -41,7 +41,7 @@ def consultar_destinos():
     return 200, "Sucesso"
 
 
-def atualizar_destino(pais, cidade, tipo, atracoes):
+def atualizar_destino(nome_procurar, pais, cidade, tipo, atracoes):
     if not destinos:
         return 404, "Não existem destinos registados."
 
@@ -50,7 +50,7 @@ def atualizar_destino(pais, cidade, tipo, atracoes):
         return 400, "Destino não encontrado."
 
     for destino in destinos:
-        if nome.lower() in destino["pais"].lower():
+        if nome_procurar.lower() in destino["pais"].lower():
             destino["pais"] = pais
             destino["cidade"] = cidade
             destino["tipo"] = tipo
