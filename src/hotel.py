@@ -16,7 +16,6 @@ def adicionar_hotel(nome_hotel, local, preco, tipo_hotel):
 def ver_hoteis():
     if not hoteis:
         return 404, "Não existem hoteis registados."
-
     return 200, hoteis
 
 
@@ -30,7 +29,6 @@ def consultar_hotel():
         return 400, "Hotel não encontrado."
 
     encontrado = False
-
     for hotel in hoteis:
         if nome.lower() in hotel["nome"].lower():
             for chave, valor in hotel.items():
@@ -47,9 +45,7 @@ def atualizar_hotel(nome_hotel, local, preco, tipo_hotel):
     if not hoteis:
         return 404, "Não existem hoteis registados."
 
-    print("\n=== ATUALIZAR HOTEL ===")
     nome = input("Digite o nome do hotel para atualizar: ").strip()
-
     if not nome:
         return 400, "Hotel não encontrado."
 
@@ -60,7 +56,6 @@ def atualizar_hotel(nome_hotel, local, preco, tipo_hotel):
             hotel["preco"] = preco
             hotel["tipo"] = tipo_hotel
             return 200, "Sucesso"
-
     return 404, "Hotel não encontrado."
 
 
@@ -70,10 +65,8 @@ def remover_hotel():
 
     print("\n=== REMOVER HOTEL ===")
     nome_remover = input("Digite o nome do hotel para remover:")
-
     for hotel in hoteis:
         if isEqual(nome_remover, hotel["nome"]):
             hoteis.remove(hotel)
             return 200, "Sucesso"
-
     return 404, "Hotel não encontrado."
