@@ -20,7 +20,6 @@ def adicionar_viajante(nome, data_nascimento, nacionalidade, telefone, email, NI
 def ver_viajantes():
     if not viajantes:
         return 404, "Não existem utilizadores registados."
-
     return 200, viajantes
 
 
