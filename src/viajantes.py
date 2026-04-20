@@ -23,12 +23,11 @@ def ver_viajantes():
     return 200, viajantes
 
 
-def consultar_viajantes():
+def consultar_viajantes(nome):
     if not viajantes:
         return 404, "Não existem utilizadores registados."
 
     print("\n=== CONSULTAR VIAJANTE ===")
-    nome = input("Nome do viajante para consultar: ").strip()
     if not nome:
         return 400, "Viajante não encontrado."
 
@@ -42,7 +41,7 @@ def consultar_viajantes():
 
     if not encontrado:
         return 404, "Viajante não encontrado."
-    return 200, "Sucesso"
+    return 200, "Viajante encontrado"
 
 def atualizar_viajantes(nome_procurar, nome, data_nascimento, nacionalidade, telefone, email, NIF, interesses, orcamento):
     if not viajantes:
@@ -61,18 +60,41 @@ def atualizar_viajantes(nome_procurar, nome, data_nascimento, nacionalidade, tel
             viajante["NIF"] = NIF
             viajante["interesses"] = interesses
             viajante["orcamento"] = orcamento
-            return 200, "Sucesso"
+            return 200, "Viajante atualizado"
     return 404, "Utilizador não encontrado."
 
 
-def remover_viajantes():
+def remover_viajantes(nome_remover):
     if not viajantes:
         return 404, "Não existem utilizadores registados."
 
     print("\n=== REMOVER VIAJANTE ===")
-    nome_remover = input("Nome do viajante para remover: ")
     for viajante in viajantes:
         if isEqual(nome_remover, viajante["nome"]):
             viajantes.remove(viajante)
-            return 200, "Sucesso"
+            return 200, "Viajante Removido"
     return 404, "Utilizador não encontrado"
+
+############################################################################################
+
+def validar_nome(nome):
+    while not nome.replace(" ", "").isalpha():
+        nome = input("Digite seu nome(apenas letras):")
+    return nome
+
+def validar_nacionalidade(nacionalidade):
+    while not nacionalidade.replace(" ", "").isalpha():
+        nacionalidade = input("Digite sua nacionalidade(apenas letras):")
+    return nacionalidade
+
+
+def validar_interesses(interesses):
+    while not interesses.replace(" ", "").replace(",", "").isalpha():
+        interesses = input("Digite seus interesses(ex: praias, natureza, montanhas):")
+    return interesses
+
+
+def validar_orcamento(orcamento):
+    while not orcamento.isdigit():
+        orcamento = input("Digite seu orçamento(apenas numeros):")
+    return orcamento
