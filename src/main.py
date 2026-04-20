@@ -1,7 +1,7 @@
-from destino import adicionar_destino, ver_destinos, consultar_destinos, atualizar_destino, remover_destino, destinos
-from hotel import adicionar_hotel, ver_hoteis, consultar_hotel, atualizar_hotel, remover_hotel, hoteis
-from viajantes import adicionar_viajante, ver_viajantes, consultar_viajantes, atualizar_viajantes, remover_viajantes, viajantes
-from utils import validar_pais, validar_cidade, validar_tipo, validar_atracoes, validar_hotel, validar_local, validar_preco, validar_tipo_hotel, validar_nome, validar_data, validar_nacionalidade, validar_telefone, validar_email, validar_NIF, validar_interesses, validar_orcamento
+from destino import adicionar_destino, ver_destinos, consultar_destinos, atualizar_destino, remover_destino, destinos, validar_pais, validar_cidade, validar_tipo, validar_atracoes
+from hotel import adicionar_hotel, ver_hoteis, consultar_hotel, atualizar_hotel, remover_hotel, hoteis, validar_hotel, validar_local, validar_preco, validar_tipo_hotel
+from viajantes import adicionar_viajante, ver_viajantes, consultar_viajantes, atualizar_viajantes, remover_viajantes, viajantes, validar_nome, validar_nacionalidade, validar_interesses, validar_orcamento
+from utils import validar_data, validar_telefone, validar_email, validar_NIF
 
 def menu():
     while True:
@@ -61,7 +61,8 @@ def menu():
                 print("Erro: " + return_code[1])
 
         elif opcao == "3":
-            return_code = consultar_viajantes()
+            nome = input("Nome do viajante para consultar: ").strip()
+            return_code = consultar_viajantes(nome)
             if return_code[0] == 200:
                 print("Viajante listado com sucesso.")
             else:
@@ -89,7 +90,8 @@ def menu():
                     print("Erro: " + return_code[1])
 
         elif opcao == "5":
-            return_code = remover_viajantes()
+            nome_remover = input("Nome do viajante para remover: ")
+            return_code = remover_viajantes(nome_remover)
             if return_code[0] == 200:
                 print("Viajante removido com sucesso.")
             else:
@@ -130,7 +132,8 @@ def menu():
                 print("Erro: " + return_code[1])
 
         elif opcao == "8":
-            return_code = consultar_destinos()
+            nome = input("Nome do destino para consultar:").strip()
+            return_code = consultar_destinos(nome)
             if return_code[0] == 200:
                 print("Destino listado com sucesso.")
             else:
@@ -154,7 +157,8 @@ def menu():
                     print("Erro: " + return_code[1])
 
         elif opcao == "10":
-            return_code = remover_destino()
+            nome_remover = input("Digite o nome do destino para remover:")
+            return_code = remover_destino(nome_remover)
             if return_code[0] == 200:
                 print("Destino removido com sucesso.")
             else:
@@ -195,7 +199,8 @@ def menu():
                 print("Erro: " + return_code[1])
 
         elif opcao == "13":
-            return_code = consultar_hotel()
+            nome = input("Nome do hotel para consultar:").strip()
+            return_code = consultar_hotel(nome)
             if return_code[0] == 200:
                 print("Hotel listado com sucesso.")
             else:
@@ -219,7 +224,8 @@ def menu():
                     print("Erro: " + return_code[1])
 
         elif opcao == "15":
-            return_code = remover_hotel()
+            nome_remover = input("Digite o nome do hotel para remover:")
+            return_code = remover_hotel(nome_remover)
             if return_code[0] == 200:
                 print("Hotel removido com sucesso.")
             else:
