@@ -1,14 +1,17 @@
-from utils import isEqual
-
 destinos = []
+_proximo_id_destino = 1
+
 
 def adicionar_destino(pais, cidade, tipo, atracoes):
+    global _proximo_id_destino
     destino = {
+        "id": _proximo_id_destino,
         "pais": pais,
         "cidade": cidade,
         "tipo": tipo,
         "atracoes": atracoes,
     }
+    _proximo_id_destino += 1
     destinos.append(destino)
     return 201, "Destino criado com sucesso"
 
@@ -19,53 +22,46 @@ def ver_destinos():
     return 200, destinos
 
 
-def consultar_destinos(nome):
+def consultar_destinos(id):
     if not destinos:
         return 404, "Não existem destinos registados."
 
     print("\n=== CONSULTAR DESTINO ===")
-    if not nome:
-        return 400, "Destino não encontrado."
-
-    encontrado = False
     for destino in destinos:
-        if nome.lower() in destino["pais"].lower():
+        if destino["id"] == id:
             for chave, valor in destino.items():
                 print(chave, ":", valor)
             print()
-            encontrado = True
+            return 200, "Destino encontrado"
 
-    if not encontrado:
-        return 404, "Destino não encontrado."
-    return 200, "Destino encontrado"
+    return 404, "Destino não encontrado."
 
 
-def atualizar_destino(nome_procurar, pais, cidade, tipo, atracoes):
+def atualizar_destino(id, pais, cidade, tipo, atracoes):
     if not destinos:
         return 404, "Não existem destinos registados."
 
-    if not nome_procurar:
-        return 400, "Destino não encontrado."
-
     for destino in destinos:
-        if nome_procurar.lower() in destino["pais"].lower():
+        if destino["id"] == id:
             destino["pais"] = pais
             destino["cidade"] = cidade
             destino["tipo"] = tipo
             destino["atracoes"] = atracoes
             return 200, "Destino atualizado"
+
     return 404, "Destino não encontrado."
 
 
-def remover_destino(nome_remover):
+def remover_destino(id):
     if not destinos:
         return 404, "Não existem destinos registados."
 
     print("\n=== REMOVER DESTINO ===")
     for destino in destinos:
-        if isEqual(nome_remover, destino["pais"]):
+        if destino["id"] == id:
             destinos.remove(destino)
             return 200, "Destino removido"
+
     return 404, "Destino não encontrado"
 
 #############################################################################################
