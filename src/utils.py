@@ -3,6 +3,13 @@ from datetime import datetime
 def isEqual(nome_1, nome_2):
     return nome_1.lower() == nome_2.lower()
 
+def validar_id(mensagem):
+    while True:
+        valor = input(mensagem)
+        if valor.isdigit() and int(valor) > 0:
+            return int(valor)
+        print("Erro: introduza um ID válido (número inteiro positivo).")
+
 def validar_data(data_nascimento):
     while True:
         try:
@@ -32,3 +39,82 @@ def validar_NIF(NIF):
         print("Erro: o NIF deve ter 9 números!")
         NIF = input("Digite seu NIF novamente: ")
     return NIF
+
+
+
+def validar_id_destino(mensagem, destinos):
+    if not destinos:
+        return None, "Não existem destinos registados."
+    ids_disponiveis = []
+    for destino in destinos:
+        ids_disponiveis.append(str(destino["id"]))
+    while True:
+        id = validar_id(mensagem)
+        encontrado = False
+        for destino in destinos:
+            if destino["id"] == id:
+                encontrado = True
+                break
+        if encontrado:
+            return id, None
+        print("Erro: destino com esse ID não existe. IDs disponíveis: " + ", ".join(ids_disponiveis))
+
+
+def validar_id_hotel(mensagem, hoteis):
+    if not hoteis:
+        return None, "Não existem hoteis registados."
+    ids_disponiveis = []
+    for hotel in hoteis:
+        ids_disponiveis.append(str(hotel["id"]))
+    while True:
+        id = validar_id(mensagem)
+        encontrado = False
+        for hotel in hoteis:
+            if hotel["id"] == id:
+                encontrado = True
+                break
+        if encontrado:
+            return id, None
+        print("Erro: hotel com esse ID não existe. IDs disponíveis: " + ", ".join(ids_disponiveis))
+
+
+def validar_id_voo(mensagem, voos):
+    if not voos:
+        return None, "Não existem voos registados."
+    ids_disponiveis = []
+    for voo in voos:
+        ids_disponiveis.append(str(voo["id"]))
+    while True:
+        id = validar_id(mensagem)
+        encontrado = False
+        for voo in voos:
+            if voo["id"] == id:
+                encontrado = True
+                break
+        if encontrado:
+            return id, None
+        print("Erro: voo com esse ID não existe. IDs disponíveis: " + ", ".join(ids_disponiveis))
+
+
+def validar_id_voo_volta(mensagem, voos):
+    if not voos:
+        return None, "Não existem voos registados."
+    ids_disponiveis = []
+    for voo in voos:
+        ids_disponiveis.append(str(voo["id"]))
+    resposta = input("A viagem tem voo de volta? (s/n): ").strip().lower()
+    while resposta != "s" and resposta != "n":
+        print("Erro: responda apenas s ou n.")
+        resposta = input("A viagem tem voo de volta? (s/n): ").strip().lower()
+    if resposta == "n":
+        return None, None
+    while True:
+        id = validar_id(mensagem)
+        encontrado = False
+        for voo in voos:
+            if voo["id"] == id:
+                encontrado = True
+                break
+        if encontrado:
+            return id, None
+        print("Erro: voo com esse ID não existe. IDs disponíveis: " + ", ".join(ids_disponiveis))
