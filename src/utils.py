@@ -118,3 +118,28 @@ def validar_id_voo_volta(mensagem, voos):
         if encontrado:
             return id, None
         print("Erro: voo com esse ID não existe. IDs disponíveis: " + ", ".join(ids_disponiveis))
+
+
+def mostrar_destinos_disponiveis(destinos):
+    info = ", ".join(str(d["id"]) + " - " + d["cidade"] for d in destinos)
+    print("Destinos disponíveis: " + info)
+
+
+def mostrar_hoteis_disponiveis(hoteis):
+    info = ", ".join(str(h["id"]) + " - " + h["nome"] for h in hoteis)
+    print("Hotéis disponíveis: " + info)
+
+
+def mostrar_voos_disponiveis(voos):
+    info = ", ".join(str(v["id"]) + " - " + v["companhia"] + " (" + v["origem"] + ")" for v in voos)
+    print("Voos disponíveis: " + info)
+
+
+def mostrar_viagens_disponiveis(viagens):
+    info = ", ".join(str(v["id"]) for v in viagens)
+    print("Viagens disponíveis: " + info)
+
+
+def mostrar_nifs_disponiveis(viajantes):
+    info = ", ".join(v["NIF"] + " (" + v["nome"] + ")" for v in viajantes)
+    print("NIFs disponíveis: " + info)
