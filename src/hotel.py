@@ -13,7 +13,7 @@ def adicionar_hotel(nome_hotel, local, preco, tipo_hotel):
     }
     _proximo_id_hotel += 1
     hoteis.append(hotel)
-    return 201, "Hotel adicionado com sucesso."
+    return 201, hotel
 
 
 def ver_hoteis():
@@ -29,10 +29,7 @@ def consultar_hotel(id):
     print("\n=== CONSULTAR HOTEL ===")
     for hotel in hoteis:
         if hotel["id"] == id:
-            for chave, valor in hotel.items():
-                print(chave, ":", valor)
-            print()
-            return 200, "Hotel encontrado."
+            return 200, hotel
 
     return 404, "Hotel não encontrado."
 
@@ -47,9 +44,9 @@ def atualizar_hotel(id, nome_hotel, local, preco, tipo_hotel):
             hotel["local"] = local
             hotel["preco"] = preco
             hotel["tipo"] = tipo_hotel
-            return 200, "Hotel atualizado"
+            return 200, hoteis
 
-    return 404, "Hotel não encontrado."
+    return 404, hoteis
 
 
 def remover_hotel(id):
@@ -60,7 +57,7 @@ def remover_hotel(id):
     for hotel in hoteis:
         if hotel["id"] == id:
             hoteis.remove(hotel)
-            return 200, "Hotel removido"
+            return 200, hoteis
 
     return 404, "Hotel não encontrado."
 
