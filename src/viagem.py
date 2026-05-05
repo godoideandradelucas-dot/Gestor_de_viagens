@@ -14,7 +14,7 @@ def adicionar_viagem(id_voo_ida, id_voo_volta, lista_id_viajantes, id_hotel, id_
     }
     _proximo_id_viagem += 1
     viagens.append(viagem)
-    return 201, "Viagem adicionada com sucesso."
+    return 201, viagem
 
 
 def ver_viagens():
@@ -30,10 +30,7 @@ def consultar_viagem(id):
     print("\n=== CONSULTAR VIAGEM ===")
     for viagem in viagens:
         if viagem["id"] == id:
-            for chave, valor in viagem.items():
-                print(chave, ":", valor)
-            print()
-            return 200, "Viagem encontrada."
+            return 200, viagens
 
     return 404, "Viagem não encontrada."
 
@@ -49,7 +46,7 @@ def atualizar_viagem(id, id_voo_ida, id_voo_volta, lista_id_viajantes, id_hotel,
             viagem["lista_id_viajantes"] = lista_id_viajantes
             viagem["id_hotel"] = id_hotel
             viagem["id_destino"] = id_destino
-            return 200, "Viagem atualizada."
+            return 200, viagens
 
     return 404, "Viagem não encontrada."
 
@@ -62,7 +59,7 @@ def remover_viagem(id):
     for viagem in viagens:
         if viagem["id"] == id:
             viagens.remove(viagem)
-            return 200, "Viagem removida."
+            return 200, viagens
 
     return 404, "Viagem não encontrada."
 
