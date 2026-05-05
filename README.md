@@ -9,7 +9,7 @@ O objetivo principal é demonstrar como implementar operações **CRUD (Create, 
 * separação por ficheiros
 * validação de dados
 
-O projeto simula a gestão de um sistema de viagens com cinco entidades: **Viajante**, **Destino**, **Hotel**, **Voo** e **Viagem**.
+O projeto simula a gestão de um sistema de viagens com três entidades: **Viajante**, **Destino** e **Hotel**.
 
 ---
 
@@ -35,8 +35,6 @@ Com este projeto devemos aprender a:
      ├── viajantes.py
      ├── destino.py
      ├── hotel.py
-     ├── voo.py
-     ├── viagem.py
      └── utils.py
 └── README.md
 ```
@@ -47,9 +45,9 @@ Contém o **menu interativo em terminal**.
 
 Responsável apenas por:
 
-* apresentar as opções disponíveis
+* apresentar as 15 opções disponíveis
 * recolher a escolha do utilizador
-* chamar as funções dos módulos viajantes, destino, hotel, voo e viagem
+* chamar as funções dos módulos viajantes, destino e hotel
 
 ---
 
@@ -95,34 +93,6 @@ Os hoteis são guardados numa **lista de dicionários em memória**.
 
 ---
 
-### voo.py
-
-Contém todas as operações CRUD da entidade **Voo**:
-
-* `adicionar_voo()` — regista um novo voo
-* `ver_voos()` — lista todos os voos
-* `consultar_voo()` — pesquisa voo por ID
-* `atualizar_voo()` — atualiza dados de um voo
-* `remover_voo()` — remove um voo
-
-Os voos são guardados numa **lista de dicionários em memória**.
-
----
-
-### viagem.py
-
-Contém todas as operações CRUD da entidade **Viagem**:
-
-* `adicionar_viagem()` — regista uma nova viagem (associando voos, viajantes, hotel e destino)
-* `ver_viagens()` — lista todas as viagens
-* `consultar_viagem()` — pesquisa viagem por ID
-* `atualizar_viagem()` — atualiza dados de uma viagem
-* `remover_viagem()` — remove uma viagem
-
-As viagens são guardadas numa **lista de dicionários em memória**.
-
----
-
 ### utils.py
 
 Contém todas as funções auxiliares partilhadas pelos módulos:
@@ -154,28 +124,6 @@ Contém todas as funções auxiliares partilhadas pelos módulos:
 * `validar_preco()` — apenas números
 * `validar_tipo_hotel()` — apenas letras (hotel, pousada, resort)
 
-**Validações de Voo:**
-* `validar_companhia()` — apenas letras
-* `validar_origem()` — apenas letras
-* `validar_preco_voo()` — apenas números
-
-**Validações de Viagem:**
-* `validar_lista_nifs()` — lista de NIFs com 9 dígitos, separados por vírgula
-
-**Validações de IDs:**
-* `validar_id()` — número inteiro positivo
-* `validar_id_destino()` — verifica se o ID existe na lista de destinos
-* `validar_id_hotel()` — verifica se o ID existe na lista de hoteis
-* `validar_id_voo()` — verifica se o ID existe na lista de voos
-* `validar_id_voo_volta()` — permite indicar se existe voo de volta e valida o seu ID
-
-**Funções de apresentação:**
-* `mostrar_destinos_disponiveis()` — lista IDs e cidades dos destinos
-* `mostrar_hoteis_disponiveis()` — lista IDs e nomes dos hoteis
-* `mostrar_voos_disponiveis()` — lista IDs, companhias e origens dos voos
-* `mostrar_viagens_disponiveis()` — lista IDs das viagens
-* `mostrar_nifs_disponiveis()` — lista NIFs e nomes dos viajantes
-
 ---
 
 ## 👤 Estrutura das Entidades
@@ -194,7 +142,6 @@ orcamento
 
 ### Destino
 ```
-id
 pais
 cidade
 tipo
@@ -203,32 +150,10 @@ atracoes
 
 ### Hotel
 ```
-id
 nome
 local
 preco
 tipo
-```
-
-### Voo
-```
-id
-companhia
-origem
-id_destino
-data_partida
-data_chegada
-preco
-```
-
-### Viagem
-```
-id
-id_voo_ida
-id_voo_volta
-lista_id_viajantes
-id_hotel
-id_destino
 ```
 
 ---
@@ -243,7 +168,23 @@ id_destino
 python main.py
 ```
 
-3️⃣ Utilizar o menu apresentado com as opções disponíveis
+3️⃣ Utilizar o menu apresentado com as opções de 0 a 15
+
+---
+
+## 📋 Menu do Sistema
+
+```
+----------------------------- Gestor de Viagens -----------------------------
+1 - Adicionar viajante     6 - Adicionar destino     11 - Adicionar hotel
+2 - Ver viajantes          7 - Ver destinos          12 - Ver hoteis
+3 - Consultar viajante     8 - Consultar destino     13 - Consultar hotel
+4 - Atualizar viajante     9 - Atualizar destino     14 - Atualizar hotel
+5 - Remover viajante       10 - Remover destino      15 - Remover hotel
+
+                                0 - sair 
+----------------------------------------------------------------------------
+```
 
 ---
 
