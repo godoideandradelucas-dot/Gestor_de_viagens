@@ -72,6 +72,10 @@ def menu():
             nome = input("Nome do viajante para consultar: ").strip()
             return_code = consultar_viajantes(nome)
             if return_code[0] == 200:
+                print("\n=== CONSULTAR VIAJANTE ===")
+                for chave, valor in return_code[1].items():
+                    print(chave, ":", valor)
+                print()
                 print("Viajante listado com sucesso.")
             else:
                 print("Erro: " + return_code[1])
@@ -156,6 +160,9 @@ def menu():
             else:
                 print("Erro: " + return_code[1])
 
+
+        # DEPOIS
+
         elif opcao == "8":
             if not destinos:
                 print("Erro: Não existem destinos registados.")
@@ -164,6 +171,10 @@ def menu():
                 id = validar_id("Digite o ID do destino para consultar: ")
                 return_code = consultar_destinos(id)
                 if return_code[0] == 200:
+                    print("\n=== CONSULTAR DESTINO ===")
+                    for chave, valor in return_code[1].items():
+                        print(chave, ":", valor)
+                    print()
                     print("Destino listado com sucesso.")
                 else:
                     print("Erro: " + return_code[1])
@@ -249,6 +260,9 @@ def menu():
                 id = validar_id("Digite o ID do hotel para consultar: ")
                 return_code = consultar_hotel(id)
                 if return_code[0] == 200:
+                    for chave, valor in return_code[1].items():
+                        print(chave, ":", valor)
+                    print()
                     print("Hotel listado com sucesso.")
                 else:
                     print("Erro: " + return_code[1])
@@ -346,6 +360,9 @@ def menu():
                 id = validar_id("Digite o ID do voo para consultar: ")
                 return_code = consultar_voo(id)
                 if return_code[0] == 200:
+                    for chave, valor in return_code[1].items():
+                        print(chave, ":", valor)
+                    print()
                     print("Voo listado com sucesso.")
                 else:
                     print("Erro: " + return_code[1])
@@ -465,6 +482,9 @@ def menu():
                 id = validar_id("Digite o ID da viagem para consultar: ")
                 return_code = consultar_viagem(id)
                 if return_code[0] == 200:
+                    for chave, valor in return_code[1].items():
+                        print(chave, ":", valor)
+                    print()
                     print("Viagem listada com sucesso.")
                 else:
                     print("Erro: " + return_code[1])
