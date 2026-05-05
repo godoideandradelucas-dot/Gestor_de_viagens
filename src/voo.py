@@ -15,7 +15,7 @@ def adicionar_voo(companhia, origem, id_destino, data_partida, data_chegada, pre
     }
     _proximo_id_voo += 1
     voos.append(voo)
-    return 201, "Voo adicionado com sucesso."
+    return 201, voo
 
 
 def ver_voos():
@@ -31,10 +31,7 @@ def consultar_voo(id):
     print("\n=== CONSULTAR VOO ===")
     for voo in voos:
         if voo["id"] == id:
-            for chave, valor in voo.items():
-                print(chave, ":", valor)
-            print()
-            return 200, "Voo encontrado."
+            return 200, voos
 
     return 404, "Voo não encontrado."
 
@@ -51,7 +48,7 @@ def atualizar_voo(id, companhia, origem, id_destino, data_partida, data_chegada,
             voo["data_partida"] = data_partida
             voo["data_chegada"] = data_chegada
             voo["preco"] = preco
-            return 200, "Voo atualizado."
+            return 200, voos
 
     return 404, "Voo não encontrado."
 
@@ -64,7 +61,7 @@ def remover_voo(id):
     for voo in voos:
         if voo["id"] == id:
             voos.remove(voo)
-            return 200, "Voo removido."
+            return 200, voos
 
     return 404, "Voo não encontrado."
 
