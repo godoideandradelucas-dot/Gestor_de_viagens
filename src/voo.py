@@ -31,7 +31,7 @@ def consultar_voo(id):
     print("\n=== CONSULTAR VOO ===")
     for voo in voos:
         if voo["id"] == id:
-            return 200, voos
+            return 200, voo
 
     return 404, "Voo não encontrado."
 
