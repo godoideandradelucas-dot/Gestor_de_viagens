@@ -30,7 +30,7 @@ def consultar_viagem(id):
     print("\n=== CONSULTAR VIAGEM ===")
     for viagem in viagens:
         if viagem["id"] == id:
-            return 200, viagens
+            return 200, viagem
 
     return 404, "Viagem não encontrada."
 
