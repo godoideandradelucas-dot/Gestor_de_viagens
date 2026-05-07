@@ -1,16 +1,19 @@
-from utils import isEqual
-
 hoteis = []
+_proximo_id_hotel = 1
+
 
 def adicionar_hotel(nome_hotel, local, preco, tipo_hotel):
+    global _proximo_id_hotel
     hotel = {
+        "id": _proximo_id_hotel,
         "nome": nome_hotel,
         "local": local,
         "preco": preco,
         "tipo": tipo_hotel,
     }
+    _proximo_id_hotel += 1
     hoteis.append(hotel)
-    return 201, "Hotel adicionado com sucesso."
+    return 201, hotel
 
 
 def ver_hoteis():
@@ -19,53 +22,43 @@ def ver_hoteis():
     return 200, hoteis
 
 
-def consultar_hotel(nome):
+def consultar_hotel(id):
     if not hoteis:
         return 404, "Não existem hoteis registados."
 
     print("\n=== CONSULTAR HOTEL ===")
-    if not nome:
-        return 400, "Hotel não encontrado."
-
-    encontrado = False
     for hotel in hoteis:
-        if nome.lower() in hotel["nome"].lower():
-            for chave, valor in hotel.items():
-                print(chave, ":", valor)
-            print()
-            encontrado = True
-
-    if not encontrado:
-        return 404, "Hotel não encontrado."
-    return 200, "Hotel encontrado."
-
-def atualizar_hotel(nome_procurar, nome_hotel, local, preco, tipo_hotel):
-    if not hoteis:
-        return 404, "Não existem hoteis registados."
-
-    if not nome_procurar:
-        return 400, "Hotel não encontrado."
-
-    for hotel in hoteis:
-        if nome_procurar.lower() in hotel["nome"].lower():
-            hotel["nome"] = nome_hotel
-            hotel["local"] = local
-            hotel["preco"] = preco
-            hotel["tipo"] = tipo_hotel
-            return 200, "Hotel atualizado"
+        if hotel["id"] == id:
+            return 200, hotel
 
     return 404, "Hotel não encontrado."
 
 
-def remover_hotel(nome_remover):
+def atualizar_hotel(id, nome_hotel, local, preco, tipo_hotel):
+    if not hoteis:
+        return 404, "Não existem hoteis registados."
+
+    for hotel in hoteis:
+        if hotel["id"] == id:
+            hotel["nome"] = nome_hotel
+            hotel["local"] = local
+            hotel["preco"] = preco
+            hotel["tipo"] = tipo_hotel
+            return 200, hoteis
+
+    return 404, hoteis
+
+
+def remover_hotel(id):
     if not hoteis:
         return 404, "Não existem hoteis registados."
 
     print("\n=== REMOVER HOTEL ===")
     for hotel in hoteis:
-        if isEqual(nome_remover, hotel["nome"]):
+        if hotel["id"] == id:
             hoteis.remove(hotel)
-            return 200, "Hotel removido"
+            return 200, hoteis
+
     return 404, "Hotel não encontrado."
 
 #############################################################################################

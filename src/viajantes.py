@@ -23,25 +23,18 @@ def ver_viajantes():
     return 200, viajantes
 
 
+# DEPOIS
 def consultar_viajantes(nome):
     if not viajantes:
         return 404, "Não existem utilizadores registados."
 
-    print("\n=== CONSULTAR VIAJANTE ===")
     if not nome:
         return 400, "Viajante não encontrado."
 
-    encontrado = False
     for viajante in viajantes:
         if nome.lower() in viajante["nome"].lower():
-            for chave, valor in viajante.items():
-                print(chave, ":", valor)
-            print()
-            encontrado = True
-
-    if not encontrado:
-        return 404, "Viajante não encontrado."
-    return 200, "Viajante encontrado"
+            return 200, viajante
+    return 404, "Viajante não encontrado."
 
 def atualizar_viajantes(nome_procurar, nome, data_nascimento, nacionalidade, telefone, email, NIF, interesses, orcamento):
     if not viajantes:
@@ -60,7 +53,7 @@ def atualizar_viajantes(nome_procurar, nome, data_nascimento, nacionalidade, tel
             viajante["NIF"] = NIF
             viajante["interesses"] = interesses
             viajante["orcamento"] = orcamento
-            return 200, "Viajante atualizado"
+            return 200, viajantes
     return 404, "Utilizador não encontrado."
 
 
@@ -72,7 +65,7 @@ def remover_viajantes(nome_remover):
     for viajante in viajantes:
         if isEqual(nome_remover, viajante["nome"]):
             viajantes.remove(viajante)
-            return 200, "Viajante Removido"
+            return 200, viajantes
     return 404, "Utilizador não encontrado"
 
 ############################################################################################
