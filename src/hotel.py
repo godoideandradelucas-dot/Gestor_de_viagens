@@ -1,5 +1,26 @@
+import json
+import os
+
+FICHEIRO = "dados_hoteis.json"
+
+def _carregar():
+    global hoteis, _proximo_id_hotel
+    if os.path.exists(FICHEIRO):
+        with open(FICHEIRO, "r", encoding="utf-8") as f:
+            dados = json.load(f)
+        hoteis = dados.get("lista", [])
+        _proximo_id_hotel = dados.get("proximo_id", 1)
+    else:
+        hoteis = []
+        _proximo_id_hotel = 1
+
+def _guardar():
+    with open(FICHEIRO, "w", encoding="utf-8") as f:
+        json.dump({"lista": hoteis, "proximo_id": _proximo_id_hotel}, f, ensure_ascii=False, indent=2)
+
 hoteis = []
 _proximo_id_hotel = 1
+_carregar()
 
 
 def adicionar_hotel(nome_hotel, local, preco, tipo_hotel):
@@ -13,6 +34,7 @@ def adicionar_hotel(nome_hotel, local, preco, tipo_hotel):
     }
     _proximo_id_hotel += 1
     hoteis.append(hotel)
+    _guardar()
     return 201, hotel
 
 
@@ -44,6 +66,7 @@ def atualizar_hotel(id, nome_hotel, local, preco, tipo_hotel):
             hotel["local"] = local
             hotel["preco"] = preco
             hotel["tipo"] = tipo_hotel
+            _guardar()
             return 200, hoteis
 
     return 404, hoteis
@@ -57,6 +80,7 @@ def remover_hotel(id):
     for hotel in hoteis:
         if hotel["id"] == id:
             hoteis.remove(hotel)
+            _guardar()
             return 200, hoteis
 
     return 404, "Hotel não encontrado."
