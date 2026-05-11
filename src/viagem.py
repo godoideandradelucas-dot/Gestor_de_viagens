@@ -1,5 +1,26 @@
+import json
+import os
+
+FICHEIRO = "dados_viagens.json"
+
+def _carregar():
+    global viagens, _proximo_id_viagem
+    if os.path.exists(FICHEIRO):
+        with open(FICHEIRO, "r", encoding="utf-8") as f:
+            dados = json.load(f)
+        viagens = dados.get("lista", [])
+        _proximo_id_viagem = dados.get("proximo_id", 1)
+    else:
+        viagens = []
+        _proximo_id_viagem = 1
+
+def _guardar():
+    with open(FICHEIRO, "w", encoding="utf-8") as f:
+        json.dump({"lista": viagens, "proximo_id": _proximo_id_viagem}, f, ensure_ascii=False, indent=2)
+
 viagens = []
 _proximo_id_viagem = 1
+_carregar()
 
 
 def adicionar_viagem(id_voo_ida, id_voo_volta, lista_id_viajantes, id_hotel, id_destino):
@@ -14,6 +35,7 @@ def adicionar_viagem(id_voo_ida, id_voo_volta, lista_id_viajantes, id_hotel, id_
     }
     _proximo_id_viagem += 1
     viagens.append(viagem)
+    _guardar()
     return 201, viagem
 
 
@@ -46,6 +68,7 @@ def atualizar_viagem(id, id_voo_ida, id_voo_volta, lista_id_viajantes, id_hotel,
             viagem["lista_id_viajantes"] = lista_id_viajantes
             viagem["id_hotel"] = id_hotel
             viagem["id_destino"] = id_destino
+            _guardar()
             return 200, viagens
 
     return 404, "Viagem não encontrada."
@@ -59,6 +82,7 @@ def remover_viagem(id):
     for viagem in viagens:
         if viagem["id"] == id:
             viagens.remove(viagem)
+            _guardar()
             return 200, viagens
 
     return 404, "Viagem não encontrada."
