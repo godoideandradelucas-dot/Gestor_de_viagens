@@ -1,5 +1,26 @@
+import json
+import os
+
+FICHEIRO = "dados_destinos.json"
+
+def _carregar():
+    global destinos, _proximo_id_destino
+    if os.path.exists(FICHEIRO):
+        with open(FICHEIRO, "r", encoding="utf-8") as f:
+            dados = json.load(f)
+        destinos = dados.get("lista", [])
+        _proximo_id_destino = dados.get("proximo_id", 1)
+    else:
+        destinos = []
+        _proximo_id_destino = 1
+
+def _guardar():
+    with open(FICHEIRO, "w", encoding="utf-8") as f:
+        json.dump({"lista": destinos, "proximo_id": _proximo_id_destino}, f, ensure_ascii=False, indent=2)
+
 destinos = []
 _proximo_id_destino = 1
+_carregar()
 
 
 def adicionar_destino(pais, cidade, tipo, atracoes):
@@ -13,6 +34,7 @@ def adicionar_destino(pais, cidade, tipo, atracoes):
     }
     _proximo_id_destino += 1
     destinos.append(destino)
+    _guardar()
     return 201, destino
 
 
@@ -44,6 +66,7 @@ def atualizar_destino(id, pais, cidade, tipo, atracoes):
             destino["cidade"] = cidade
             destino["tipo"] = tipo
             destino["atracoes"] = atracoes
+            _guardar()
             return 200, destinos
 
     return 404, "Destino não encontrado."
@@ -57,6 +80,7 @@ def remover_destino(id):
     for destino in destinos:
         if destino["id"] == id:
             destinos.remove(destino)
+            _guardar()
             return 200, destinos
 
     return 404, "Destino não encontrado"
