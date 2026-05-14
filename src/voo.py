@@ -20,11 +20,11 @@ def _guardar():
 
 voos = []
 _proximo_id_voo = 1
-_carregar()
 
 
 def adicionar_voo(companhia, origem, id_destino, data_partida, data_chegada, preco):
     global _proximo_id_voo
+    _carregar()
     voo = {
         "id": _proximo_id_voo,
         "companhia": companhia,
@@ -41,12 +41,14 @@ def adicionar_voo(companhia, origem, id_destino, data_partida, data_chegada, pre
 
 
 def ver_voos():
+    _carregar()
     if not voos:
         return 404, "Não existem voos registados."
     return 200, voos
 
 
 def consultar_voo(id):
+    _carregar()
     if not voos:
         return 404, "Não existem voos registados."
 
@@ -59,6 +61,7 @@ def consultar_voo(id):
 
 
 def atualizar_voo(id, companhia, origem, id_destino, data_partida, data_chegada, preco):
+    _carregar()
     if not voos:
         return 404, "Não existem voos registados."
 
@@ -77,6 +80,7 @@ def atualizar_voo(id, companhia, origem, id_destino, data_partida, data_chegada,
 
 
 def remover_voo(id):
+    _carregar()
     if not voos:
         return 404, "Não existem voos registados."
 
