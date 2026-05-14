@@ -20,11 +20,11 @@ def _guardar():
 
 destinos = []
 _proximo_id_destino = 1
-_carregar()
 
 
 def adicionar_destino(pais, cidade, tipo, atracoes):
     global _proximo_id_destino
+    _carregar()
     destino = {
         "id": _proximo_id_destino,
         "pais": pais,
@@ -39,12 +39,14 @@ def adicionar_destino(pais, cidade, tipo, atracoes):
 
 
 def ver_destinos():
+    _carregar()
     if not destinos:
         return 404, "Não existem destinos registados."
     return 200, destinos
 
 
 def consultar_destinos(id):
+    _carregar()
     if not destinos:
         return 404, "Não existem destinos registados."
 
@@ -57,6 +59,7 @@ def consultar_destinos(id):
 
 
 def atualizar_destino(id, pais, cidade, tipo, atracoes):
+    _carregar()
     if not destinos:
         return 404, "Não existem destinos registados."
 
@@ -73,6 +76,7 @@ def atualizar_destino(id, pais, cidade, tipo, atracoes):
 
 
 def remover_destino(id):
+    _carregar()
     if not destinos:
         return 404, "Não existem destinos registados."
 
