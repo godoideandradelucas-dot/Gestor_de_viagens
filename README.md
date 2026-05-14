@@ -8,6 +8,7 @@ O objetivo principal é demonstrar como implementar operações **CRUD (Create, 
 * dicionários e listas
 * separação por ficheiros
 * validação de dados
+* **persistência de dados em ficheiros JSON**
 
 O projeto simula a gestão de um sistema de viagens com cinco entidades: **Viajante**, **Destino**, **Hotel**, **Voo** e **Viagem**.
 
@@ -23,6 +24,7 @@ Com este projeto devemos aprender a:
 * validar dados introduzidos pelo utilizador
 * separar lógica de negócio da interface (menu)
 * importar funções entre ficheiros
+* **guardar e carregar dados automaticamente em ficheiros JSON**
 
 ---
 
@@ -38,6 +40,11 @@ Com este projeto devemos aprender a:
      ├── voo.py
      ├── viagem.py
      └── utils.py
+├── dados_viajantes.json
+├── dados_destinos.json
+├── dados_hoteis.json
+├── dados_voos.json
+├── dados_viagens.json
 └── README.md
 ```
 
@@ -63,7 +70,7 @@ Contém todas as operações CRUD da entidade **Viajante**:
 * `atualizar_viajantes()` — atualiza dados de um viajante
 * `remover_viajantes()` — remove um viajante
 
-Os viajantes são guardados numa **lista de dicionários em memória**.
+Os viajantes são guardados em memória e persistidos automaticamente no ficheiro **`dados_viajantes.json`**.
 
 ---
 
@@ -77,7 +84,7 @@ Contém todas as operações CRUD da entidade **Destino**:
 * `atualizar_destino()` — atualiza dados de um destino
 * `remover_destino()` — remove um destino
 
-Os destinos são guardados numa **lista de dicionários em memória**.
+Os destinos são guardados em memória e persistidos automaticamente no ficheiro **`dados_destinos.json`**.
 
 ---
 
@@ -91,7 +98,7 @@ Contém todas as operações CRUD da entidade **Hotel**:
 * `atualizar_hotel()` — atualiza dados de um hotel
 * `remover_hotel()` — remove um hotel
 
-Os hoteis são guardados numa **lista de dicionários em memória**.
+Os hoteis são guardados em memória e persistidos automaticamente no ficheiro **`dados_hoteis.json`**.
 
 ---
 
@@ -105,7 +112,7 @@ Contém todas as operações CRUD da entidade **Voo**:
 * `atualizar_voo()` — atualiza dados de um voo
 * `remover_voo()` — remove um voo
 
-Os voos são guardados numa **lista de dicionários em memória**.
+Os voos são guardados em memória e persistidos automaticamente no ficheiro **`dados_voos.json`**.
 
 ---
 
@@ -119,7 +126,7 @@ Contém todas as operações CRUD da entidade **Viagem**:
 * `atualizar_viagem()` — atualiza dados de uma viagem
 * `remover_viagem()` — remove uma viagem
 
-As viagens são guardadas numa **lista de dicionários em memória**.
+As viagens são guardadas em memória e persistidas automaticamente no ficheiro **`dados_viagens.json`**.
 
 ---
 
@@ -175,6 +182,52 @@ Contém todas as funções auxiliares partilhadas pelos módulos:
 * `mostrar_voos_disponiveis()` — lista IDs, companhias e origens dos voos
 * `mostrar_viagens_disponiveis()` — lista IDs das viagens
 * `mostrar_nifs_disponiveis()` — lista NIFs e nomes dos viajantes
+
+---
+
+## 💾 Persistência de Dados
+
+Todos os dados introduzidos pelo utilizador são **guardados automaticamente em ficheiros JSON** na mesma pasta do projeto. Isto significa que os dados **não se perdem** quando o programa é fechado.
+
+### Como funciona
+
+Cada módulo tem duas funções internas responsáveis pela persistência:
+
+* `_carregar()` — executada automaticamente quando o módulo é importado; lê o ficheiro JSON correspondente e carrega os dados para memória
+* `_guardar()` — executada automaticamente após qualquer operação de escrita (adicionar, atualizar ou remover); escreve o estado atual da lista no ficheiro JSON
+
+### Ficheiros gerados
+
+| Ficheiro | Conteúdo |
+|---|---|
+| `dados_viajantes.json` | Lista de viajantes registados |
+| `dados_destinos.json` | Lista de destinos e próximo ID |
+| `dados_hoteis.json` | Lista de hoteis e próximo ID |
+| `dados_voos.json` | Lista de voos e próximo ID |
+| `dados_viagens.json` | Lista de viagens e próximo ID |
+
+### Formato dos ficheiros
+
+Os ficheiros JSON têm a seguinte estrutura (exemplo para destinos):
+
+```json
+{
+  "lista": [
+    {
+      "id": 1,
+      "pais": "Espanha",
+      "cidade": "Madrid",
+      "tipo": "urbano",
+      "atracoes": "museus"
+    }
+  ],
+  "proximo_id": 2
+}
+```
+
+O campo `proximo_id` garante que os IDs são sempre únicos e sequenciais, mesmo após apagar registos ou reiniciar o programa.
+
+> **Nota:** Os ficheiros JSON são criados automaticamente na primeira execução. Se forem apagados manualmente, o programa começa com listas vazias e recria os ficheiros assim que o primeiro registo for adicionado.
 
 ---
 
@@ -258,3 +311,5 @@ Este projeto permite consolidar:
 * validação de dados com `while`
 * estruturas condicionais (`if/elif/else`)
 * ciclos (`while`, `for`)
+* **leitura e escrita de ficheiros JSON com o módulo `json`**
+* **persistência de dados entre execuções do programa** 

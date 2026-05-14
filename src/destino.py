@@ -1,9 +1,30 @@
+import json
+import os
+
+FICHEIRO = "dados_destinos.json"
+
+def _carregar():
+    global destinos, _proximo_id_destino
+    if os.path.exists(FICHEIRO):
+        with open(FICHEIRO, "r", encoding="utf-8") as f:
+            dados = json.load(f)
+        destinos = dados.get("lista", [])
+        _proximo_id_destino = dados.get("proximo_id", 1)
+    else:
+        destinos = []
+        _proximo_id_destino = 1
+
+def _guardar():
+    with open(FICHEIRO, "w", encoding="utf-8") as f:
+        json.dump({"lista": destinos, "proximo_id": _proximo_id_destino}, f, ensure_ascii=False, indent=2)
+
 destinos = []
 _proximo_id_destino = 1
 
 
 def adicionar_destino(pais, cidade, tipo, atracoes):
     global _proximo_id_destino
+    _carregar()
     destino = {
         "id": _proximo_id_destino,
         "pais": pais,
@@ -13,16 +34,19 @@ def adicionar_destino(pais, cidade, tipo, atracoes):
     }
     _proximo_id_destino += 1
     destinos.append(destino)
+    _guardar()
     return 201, destino
 
 
 def ver_destinos():
+    _carregar()
     if not destinos:
         return 404, "Não existem destinos registados."
     return 200, destinos
 
 
 def consultar_destinos(id):
+    _carregar()
     if not destinos:
         return 404, "Não existem destinos registados."
 
@@ -35,6 +59,7 @@ def consultar_destinos(id):
 
 
 def atualizar_destino(id, pais, cidade, tipo, atracoes):
+    _carregar()
     if not destinos:
         return 404, "Não existem destinos registados."
 
@@ -44,12 +69,14 @@ def atualizar_destino(id, pais, cidade, tipo, atracoes):
             destino["cidade"] = cidade
             destino["tipo"] = tipo
             destino["atracoes"] = atracoes
+            _guardar()
             return 200, destinos
 
     return 404, "Destino não encontrado."
 
 
 def remover_destino(id):
+    _carregar()
     if not destinos:
         return 404, "Não existem destinos registados."
 
@@ -57,6 +84,7 @@ def remover_destino(id):
     for destino in destinos:
         if destino["id"] == id:
             destinos.remove(destino)
+            _guardar()
             return 200, destinos
 
     return 404, "Destino não encontrado"

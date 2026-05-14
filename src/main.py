@@ -1,8 +1,8 @@
-from destino import adicionar_destino, ver_destinos, consultar_destinos, atualizar_destino, remover_destino, destinos, validar_pais, validar_cidade, validar_tipo, validar_atracoes
-from hotel import adicionar_hotel, ver_hoteis, consultar_hotel, atualizar_hotel, remover_hotel, hoteis, validar_hotel, validar_local, validar_preco, validar_tipo_hotel
-from viajantes import adicionar_viajante, ver_viajantes, consultar_viajantes, atualizar_viajantes, remover_viajantes, viajantes, validar_nome, validar_nacionalidade, validar_interesses, validar_orcamento
-from voo import adicionar_voo, ver_voos, consultar_voo, atualizar_voo, remover_voo, voos, validar_companhia, validar_origem, validar_preco_voo
-from viagem import adicionar_viagem, ver_viagens, consultar_viagem, atualizar_viagem, remover_viagem, viagens, validar_lista_nifs
+from destino import adicionar_destino, ver_destinos, consultar_destinos, atualizar_destino, remover_destino, validar_pais, validar_cidade, validar_tipo, validar_atracoes
+from hotel import adicionar_hotel, ver_hoteis, consultar_hotel, atualizar_hotel, remover_hotel, validar_hotel, validar_local, validar_preco, validar_tipo_hotel
+from viajantes import adicionar_viajante, ver_viajantes, consultar_viajantes, atualizar_viajantes, remover_viajantes, validar_nome, validar_nacionalidade, validar_interesses, validar_orcamento
+from voo import adicionar_voo, ver_voos, consultar_voo, atualizar_voo, remover_voo, validar_companhia, validar_origem, validar_preco_voo
+from viagem import adicionar_viagem, ver_viagens, consultar_viagem, atualizar_viagem, remover_viagem, validar_lista_nifs
 from utils import validar_data, validar_telefone, validar_email, validar_NIF, validar_id, validar_id_destino, validar_id_hotel, validar_id_voo, validar_id_voo_volta, mostrar_destinos_disponiveis, mostrar_hoteis_disponiveis, mostrar_voos_disponiveis, mostrar_nifs_disponiveis, mostrar_viagens_disponiveis
 
 def menu():
@@ -81,7 +81,7 @@ def menu():
                 print("Erro: " + return_code[1])
 
         elif opcao == "4":
-            if not viajantes:
+            if ver_viajantes()[0] != 200:
                 print("Erro: Não existem utilizadores registados.")
             else:
                 print("\n=== ATUALIZAR VIAJANTE ===")
@@ -164,10 +164,10 @@ def menu():
         # DEPOIS
 
         elif opcao == "8":
-            if not destinos:
+            if ver_destinos()[0] != 200:
                 print("Erro: Não existem destinos registados.")
             else:
-                mostrar_destinos_disponiveis(destinos)
+                mostrar_destinos_disponiveis(ver_destinos()[1])
                 id = validar_id("Digite o ID do destino para consultar: ")
                 return_code = consultar_destinos(id)
                 if return_code[0] == 200:
@@ -180,11 +180,11 @@ def menu():
                     print("Erro: " + return_code[1])
 
         elif opcao == "9":
-            if not destinos:
+            if ver_destinos()[0] != 200:
                 print("Erro: Não existem destinos registados.")
             else:
                 print("\n=== ATUALIZAR DESTINO ===")
-                mostrar_destinos_disponiveis(destinos)
+                mostrar_destinos_disponiveis(ver_destinos()[1])
                 id = validar_id("Digite o ID do destino para atualizar: ")
                 print("Digite os novos dados:")
 
@@ -207,10 +207,10 @@ def menu():
                     print("Erro: " + return_code[1])
 
         elif opcao == "10":
-            if not destinos:
+            if ver_destinos()[0] != 200:
                 print("Erro: Não existem destinos registados.")
             else:
-                mostrar_destinos_disponiveis(destinos)
+                mostrar_destinos_disponiveis(ver_destinos()[1])
                 id = validar_id("Digite o ID do destino para remover: ")
                 return_code = remover_destino(id)
                 if return_code[0] == 200:
@@ -253,10 +253,10 @@ def menu():
                 print("Erro: " + return_code[1])
 
         elif opcao == "13":
-            if not hoteis:
+            if ver_hoteis()[0] != 200:
                 print("Erro: Não existem hoteis registados.")
             else:
-                mostrar_hoteis_disponiveis(hoteis)
+                mostrar_hoteis_disponiveis(ver_hoteis()[1])
                 id = validar_id("Digite o ID do hotel para consultar: ")
                 return_code = consultar_hotel(id)
                 if return_code[0] == 200:
@@ -268,11 +268,11 @@ def menu():
                     print("Erro: " + return_code[1])
 
         elif opcao == "14":
-            if not hoteis:
+            if ver_hoteis()[0] != 200:
                 print("Erro: Não existem hoteis registados.")
             else:
                 print("\n=== ATUALIZAR HOTEL ===")
-                mostrar_hoteis_disponiveis(hoteis)
+                mostrar_hoteis_disponiveis(ver_hoteis()[1])
                 id = validar_id("Digite o ID do hotel para atualizar: ")
                 print("Digite os novos dados:")
 
@@ -295,10 +295,10 @@ def menu():
                     print("Erro: " + return_code[1])
 
         elif opcao == "15":
-            if not hoteis:
+            if ver_hoteis()[0] != 200:
                 print("Erro: Não existem hoteis registados.")
             else:
-                mostrar_hoteis_disponiveis(hoteis)
+                mostrar_hoteis_disponiveis(ver_hoteis()[1])
                 id = validar_id("Digite o ID do hotel para remover: ")
                 return_code = remover_hotel(id)
                 if return_code[0] == 200:
@@ -309,7 +309,7 @@ def menu():
 #############################################################################################
 
         elif opcao == "16":
-            if not destinos:
+            if ver_destinos()[0] != 200:
                 print("Erro: Não existem destinos registados.")
             else:
                 print("\n=== ADICIONAR VOO ===")
@@ -319,8 +319,8 @@ def menu():
                 origem = input("Digite a cidade de origem:")
                 origem = validar_origem(origem)
 
-                mostrar_destinos_disponiveis(destinos)
-                id_destino, erro = validar_id_destino("Digite o ID do destino: ", destinos)
+                mostrar_destinos_disponiveis(ver_destinos()[1])
+                id_destino, erro = validar_id_destino("Digite o ID do destino: ", ver_destinos()[1])
                 if erro:
                     print("Erro: " + erro)
                     continue
@@ -353,10 +353,10 @@ def menu():
                 print("Erro: " + return_code[1])
 
         elif opcao == "18":
-            if not voos:
+            if ver_voos()[0] != 200:
                 print("Erro: Não existem voos registados.")
             else:
-                mostrar_voos_disponiveis(voos)
+                mostrar_voos_disponiveis(ver_voos()[1])
                 id = validar_id("Digite o ID do voo para consultar: ")
                 return_code = consultar_voo(id)
                 if return_code[0] == 200:
@@ -368,11 +368,11 @@ def menu():
                     print("Erro: " + return_code[1])
 
         elif opcao == "19":
-            if not voos:
+            if ver_voos()[0] != 200:
                 print("Erro: Não existem voos registados.")
             else:
                 print("\n=== ATUALIZAR VOO ===")
-                mostrar_voos_disponiveis(voos)
+                mostrar_voos_disponiveis(ver_voos()[1])
                 id = validar_id("Digite o ID do voo para atualizar: ")
                 print("Digite os novos dados:")
 
@@ -382,8 +382,8 @@ def menu():
                 origem = input("Digite a nova cidade de origem:")
                 origem = validar_origem(origem)
 
-                mostrar_destinos_disponiveis(destinos)
-                id_destino, erro = validar_id_destino("Digite o novo ID do destino: ", destinos)
+                mostrar_destinos_disponiveis(ver_destinos()[1])
+                id_destino, erro = validar_id_destino("Digite o novo ID do destino: ", ver_destinos()[1])
                 if erro:
                     print("Erro: " + erro)
                     continue
@@ -404,10 +404,10 @@ def menu():
                     print("Erro: " + return_code[1])
 
         elif opcao == "20":
-            if not voos:
+            if ver_voos()[0] != 200:
                 print("Erro: Não existem voos registados.")
             else:
-                mostrar_voos_disponiveis(voos)
+                mostrar_voos_disponiveis(ver_voos()[1])
                 id = validar_id("Digite o ID do voo para remover: ")
                 return_code = remover_voo(id)
                 if return_code[0] == 200:
@@ -418,40 +418,40 @@ def menu():
 #############################################################################################
 
         elif opcao == "21":
-            if not voos:
+            if ver_voos()[0] != 200:
                 print("Erro: Não existem voos registados.")
-            elif not hoteis:
+            elif ver_hoteis()[0] != 200:
                 print("Erro: Não existem hoteis registados.")
-            elif not destinos:
+            elif ver_destinos()[0] != 200:
                 print("Erro: Não existem destinos registados.")
-            elif not viajantes:
+            elif ver_viajantes()[0] != 200:
                 print("Erro: Não existem viajantes registados.")
             else:
                 print("\n=== ADICIONAR VIAGEM ===")
 
-                mostrar_voos_disponiveis(voos)
-                id_voo_ida, erro = validar_id_voo("Digite o ID do voo de ida: ", voos)
+                mostrar_voos_disponiveis(ver_voos()[1])
+                id_voo_ida, erro = validar_id_voo("Digite o ID do voo de ida: ", ver_voos()[1])
                 if erro:
                     print("Erro: " + erro)
                     continue
 
-                id_voo_volta, erro = validar_id_voo_volta("Digite o ID do voo de volta: ", voos)
+                id_voo_volta, erro = validar_id_voo_volta("Digite o ID do voo de volta: ", ver_voos()[1])
                 if erro:
                     print("Erro: " + erro)
                     continue
 
-                mostrar_nifs_disponiveis(viajantes)
+                mostrar_nifs_disponiveis(ver_viajantes()[1])
                 lista_nifs_str = input("Digite os NIFs dos viajantes (separados por vírgula):")
                 lista_id_viajantes = validar_lista_nifs(lista_nifs_str)
 
-                mostrar_hoteis_disponiveis(hoteis)
-                id_hotel, erro = validar_id_hotel("Digite o ID do hotel: ", hoteis)
+                mostrar_hoteis_disponiveis(ver_hoteis()[1])
+                id_hotel, erro = validar_id_hotel("Digite o ID do hotel: ", ver_hoteis()[1])
                 if erro:
                     print("Erro: " + erro)
                     continue
 
-                mostrar_destinos_disponiveis(destinos)
-                id_destino, erro = validar_id_destino("Digite o ID do destino: ", destinos)
+                mostrar_destinos_disponiveis(ver_destinos()[1])
+                id_destino, erro = validar_id_destino("Digite o ID do destino: ", ver_destinos()[1])
                 if erro:
                     print("Erro: " + erro)
                     continue
@@ -475,10 +475,10 @@ def menu():
                 print("Erro: " + return_code[1])
 
         elif opcao == "23":
-            if not viagens:
+            if ver_viagens()[0] != 200:
                 print("Erro: Não existem viagens registadas.")
             else:
-                mostrar_viagens_disponiveis(viagens)
+                mostrar_viagens_disponiveis(ver_viagens()[1])
                 id = validar_id("Digite o ID da viagem para consultar: ")
                 return_code = consultar_viagem(id)
                 if return_code[0] == 200:
@@ -490,37 +490,37 @@ def menu():
                     print("Erro: " + return_code[1])
 
         elif opcao == "24":
-            if not viagens:
+            if ver_viagens()[0] != 200:
                 print("Erro: Não existem viagens registadas.")
             else:
                 print("\n=== ATUALIZAR VIAGEM ===")
-                mostrar_viagens_disponiveis(viagens)
+                mostrar_viagens_disponiveis(ver_viagens()[1])
                 id = validar_id("Digite o ID da viagem para atualizar: ")
                 print("Digite os novos dados:")
 
-                mostrar_voos_disponiveis(voos)
-                id_voo_ida, erro = validar_id_voo("Digite o novo ID do voo de ida: ", voos)
+                mostrar_voos_disponiveis(ver_voos()[1])
+                id_voo_ida, erro = validar_id_voo("Digite o novo ID do voo de ida: ", ver_voos()[1])
                 if erro:
                     print("Erro: " + erro)
                     continue
 
-                id_voo_volta, erro = validar_id_voo_volta("Digite o novo ID do voo de volta: ", voos)
+                id_voo_volta, erro = validar_id_voo_volta("Digite o novo ID do voo de volta: ", ver_voos()[1])
                 if erro:
                     print("Erro: " + erro)
                     continue
 
-                mostrar_nifs_disponiveis(viajantes)
+                mostrar_nifs_disponiveis(ver_viajantes()[1])
                 lista_nifs_str = input("Digite os novos NIFs dos viajantes (separados por vírgula):")
                 lista_id_viajantes = validar_lista_nifs(lista_nifs_str)
 
-                mostrar_hoteis_disponiveis(hoteis)
-                id_hotel, erro = validar_id_hotel("Digite o novo ID do hotel: ", hoteis)
+                mostrar_hoteis_disponiveis(ver_hoteis()[1])
+                id_hotel, erro = validar_id_hotel("Digite o novo ID do hotel: ", ver_hoteis()[1])
                 if erro:
                     print("Erro: " + erro)
                     continue
 
-                mostrar_destinos_disponiveis(destinos)
-                id_destino, erro = validar_id_destino("Digite o novo ID do destino: ", destinos)
+                mostrar_destinos_disponiveis(ver_destinos()[1])
+                id_destino, erro = validar_id_destino("Digite o novo ID do destino: ", ver_destinos()[1])
                 if erro:
                     print("Erro: " + erro)
                     continue
@@ -532,10 +532,10 @@ def menu():
                     print("Erro: " + return_code[1])
 
         elif opcao == "25":
-            if not viagens:
+            if ver_viagens()[0] != 200:
                 print("Erro: Não existem viagens registadas.")
             else:
-                mostrar_viagens_disponiveis(viagens)
+                mostrar_viagens_disponiveis(ver_viagens()[1])
                 id = validar_id("Digite o ID da viagem para remover: ")
                 return_code = remover_viagem(id)
                 if return_code[0] == 200:

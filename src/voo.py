@@ -1,9 +1,30 @@
+import json
+import os
+
+FICHEIRO = "dados_voos.json"
+
+def _carregar():
+    global voos, _proximo_id_voo
+    if os.path.exists(FICHEIRO):
+        with open(FICHEIRO, "r", encoding="utf-8") as f:
+            dados = json.load(f)
+        voos = dados.get("lista", [])
+        _proximo_id_voo = dados.get("proximo_id", 1)
+    else:
+        voos = []
+        _proximo_id_voo = 1
+
+def _guardar():
+    with open(FICHEIRO, "w", encoding="utf-8") as f:
+        json.dump({"lista": voos, "proximo_id": _proximo_id_voo}, f, ensure_ascii=False, indent=2)
+
 voos = []
 _proximo_id_voo = 1
 
 
 def adicionar_voo(companhia, origem, id_destino, data_partida, data_chegada, preco):
     global _proximo_id_voo
+    _carregar()
     voo = {
         "id": _proximo_id_voo,
         "companhia": companhia,
@@ -15,16 +36,19 @@ def adicionar_voo(companhia, origem, id_destino, data_partida, data_chegada, pre
     }
     _proximo_id_voo += 1
     voos.append(voo)
+    _guardar()
     return 201, voo
 
 
 def ver_voos():
+    _carregar()
     if not voos:
         return 404, "Não existem voos registados."
     return 200, voos
 
 
 def consultar_voo(id):
+    _carregar()
     if not voos:
         return 404, "Não existem voos registados."
 
@@ -37,6 +61,7 @@ def consultar_voo(id):
 
 
 def atualizar_voo(id, companhia, origem, id_destino, data_partida, data_chegada, preco):
+    _carregar()
     if not voos:
         return 404, "Não existem voos registados."
 
@@ -48,12 +73,14 @@ def atualizar_voo(id, companhia, origem, id_destino, data_partida, data_chegada,
             voo["data_partida"] = data_partida
             voo["data_chegada"] = data_chegada
             voo["preco"] = preco
+            _guardar()
             return 200, voos
 
     return 404, "Voo não encontrado."
 
 
 def remover_voo(id):
+    _carregar()
     if not voos:
         return 404, "Não existem voos registados."
 
@@ -61,6 +88,7 @@ def remover_voo(id):
     for voo in voos:
         if voo["id"] == id:
             voos.remove(voo)
+            _guardar()
             return 200, voos
 
     return 404, "Voo não encontrado."
