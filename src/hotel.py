@@ -20,11 +20,11 @@ def _guardar():
 
 hoteis = []
 _proximo_id_hotel = 1
-_carregar()
 
 
 def adicionar_hotel(nome_hotel, local, preco, tipo_hotel):
     global _proximo_id_hotel
+    _carregar()
     hotel = {
         "id": _proximo_id_hotel,
         "nome": nome_hotel,
@@ -39,12 +39,14 @@ def adicionar_hotel(nome_hotel, local, preco, tipo_hotel):
 
 
 def ver_hoteis():
+    _carregar()
     if not hoteis:
         return 404, "Não existem hoteis registados."
     return 200, hoteis
 
 
 def consultar_hotel(id):
+    _carregar()
     if not hoteis:
         return 404, "Não existem hoteis registados."
 
@@ -57,6 +59,7 @@ def consultar_hotel(id):
 
 
 def atualizar_hotel(id, nome_hotel, local, preco, tipo_hotel):
+    _carregar()
     if not hoteis:
         return 404, "Não existem hoteis registados."
 
@@ -73,6 +76,7 @@ def atualizar_hotel(id, nome_hotel, local, preco, tipo_hotel):
 
 
 def remover_hotel(id):
+    _carregar()
     if not hoteis:
         return 404, "Não existem hoteis registados."
 
