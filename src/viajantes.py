@@ -18,10 +18,10 @@ def _guardar():
         json.dump({"lista": viajantes}, f, ensure_ascii=False, indent=2)
 
 viajantes = []
-_carregar()
 
 
 def adicionar_viajante(nome, data_nascimento, nacionalidade, telefone, email, NIF, interesses, orcamento):
+    _carregar()
     viajante = {
         "nome": nome,
         "data_nascimento": data_nascimento,
@@ -38,12 +38,14 @@ def adicionar_viajante(nome, data_nascimento, nacionalidade, telefone, email, NI
 
 
 def ver_viajantes():
+    _carregar()
     if not viajantes:
         return 404, "Não existem utilizadores registados."
     return 200, viajantes
 
 
 def consultar_viajantes(nome):
+    _carregar()
     if not viajantes:
         return 404, "Não existem utilizadores registados."
 
@@ -56,6 +58,7 @@ def consultar_viajantes(nome):
     return 404, "Viajante não encontrado."
 
 def atualizar_viajantes(nome_procurar, nome, data_nascimento, nacionalidade, telefone, email, NIF, interesses, orcamento):
+    _carregar()
     if not viajantes:
         return 404, "Não existem utilizadores registados."
 
@@ -78,6 +81,7 @@ def atualizar_viajantes(nome_procurar, nome, data_nascimento, nacionalidade, tel
 
 
 def remover_viajantes(nome_remover):
+    _carregar()
     if not viajantes:
         return 404, "Não existem utilizadores registados."
 
