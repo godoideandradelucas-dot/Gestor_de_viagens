@@ -20,11 +20,11 @@ def _guardar():
 
 viagens = []
 _proximo_id_viagem = 1
-_carregar()
 
 
 def adicionar_viagem(id_voo_ida, id_voo_volta, lista_id_viajantes, id_hotel, id_destino):
     global _proximo_id_viagem
+    _carregar()
     viagem = {
         "id": _proximo_id_viagem,
         "id_voo_ida": id_voo_ida,
@@ -40,12 +40,14 @@ def adicionar_viagem(id_voo_ida, id_voo_volta, lista_id_viajantes, id_hotel, id_
 
 
 def ver_viagens():
+    _carregar()
     if not viagens:
         return 404, "Não existem viagens registadas."
     return 200, viagens
 
 
 def consultar_viagem(id):
+    _carregar()
     if not viagens:
         return 404, "Não existem viagens registadas."
 
@@ -58,6 +60,7 @@ def consultar_viagem(id):
 
 
 def atualizar_viagem(id, id_voo_ida, id_voo_volta, lista_id_viajantes, id_hotel, id_destino):
+    _carregar()
     if not viagens:
         return 404, "Não existem viagens registadas."
 
@@ -75,6 +78,7 @@ def atualizar_viagem(id, id_voo_ida, id_voo_volta, lista_id_viajantes, id_hotel,
 
 
 def remover_viagem(id):
+    _carregar()
     if not viagens:
         return 404, "Não existem viagens registadas."
 
