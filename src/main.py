@@ -4,29 +4,9 @@ from viajantes import adicionar_viajante, ver_viajantes, consultar_viajantes, at
 from voo import adicionar_voo, ver_voos, consultar_voo, atualizar_voo, remover_voo, validar_companhia, validar_origem, validar_preco_voo
 from viagem import adicionar_viagem, ver_viagens, consultar_viagem, atualizar_viagem, remover_viagem, validar_lista_nifs
 from utils import validar_data, validar_telefone, validar_email, validar_NIF, validar_id, validar_id_destino, validar_id_hotel, validar_id_voo, validar_id_voo_volta, mostrar_destinos_disponiveis, mostrar_hoteis_disponiveis, mostrar_voos_disponiveis, mostrar_nifs_disponiveis, mostrar_viagens_disponiveis
-from utils import get_logger
+from utils import get_logger, get_destinos, get_hoteis, get_voos, get_viajantes, get_viagens
 
 log = get_logger("main")
-
-def _get_destinos():
-    rc = ver_destinos()
-    return rc[1] if rc[0] == 200 else []
-
-def _get_hoteis():
-    rc = ver_hoteis()
-    return rc[1] if rc[0] == 200 else []
-
-def _get_voos():
-    rc = ver_voos()
-    return rc[1] if rc[0] == 200 else []
-
-def _get_viajantes():
-    rc = ver_viajantes()
-    return rc[1] if rc[0] == 200 else []
-
-def _get_viagens():
-    rc = ver_viagens()
-    return rc[1] if rc[0] == 200 else []
 
 def menu():
     log.info("Sistema iniciado.")
@@ -107,7 +87,7 @@ def menu():
                 print("Erro: " + return_code[1])
 
         elif opcao == "4":
-            viajantes = _get_viajantes()
+            viajantes = get_viajantes()
             if not viajantes:
                 print("Erro: Não existem utilizadores registados.")
             else:
@@ -191,7 +171,7 @@ def menu():
                 print("Erro: " + return_code[1])
 
         elif opcao == "8":
-            destinos = _get_destinos()
+            destinos = get_destinos()
             if not destinos:
                 print("Erro: Não existem destinos registados.")
             else:
@@ -209,7 +189,7 @@ def menu():
                     print("Erro: " + return_code[1])
 
         elif opcao == "9":
-            destinos = _get_destinos()
+            destinos = get_destinos()
             if not destinos:
                 print("Erro: Não existem destinos registados.")
             else:
@@ -238,7 +218,7 @@ def menu():
                     print("Erro: " + return_code[1])
 
         elif opcao == "10":
-            destinos = _get_destinos()
+            destinos = get_destinos()
             if not destinos:
                 print("Erro: Não existem destinos registados.")
             else:
@@ -287,7 +267,7 @@ def menu():
                 print("Erro: " + return_code[1])
 
         elif opcao == "13":
-            hoteis = _get_hoteis()
+            hoteis = get_hoteis()
             if not hoteis:
                 print("Erro: Não existem hoteis registados.")
             else:
@@ -304,7 +284,7 @@ def menu():
                     print("Erro: " + return_code[1])
 
         elif opcao == "14":
-            hoteis = _get_hoteis()
+            hoteis = get_hoteis()
             if not hoteis:
                 print("Erro: Não existem hoteis registados.")
             else:
@@ -333,7 +313,7 @@ def menu():
                     print("Erro: " + return_code[1])
 
         elif opcao == "15":
-            hoteis = _get_hoteis()
+            hoteis = get_hoteis()
             if not hoteis:
                 print("Erro: Não existem hoteis registados.")
             else:
@@ -349,7 +329,7 @@ def menu():
 #############################################################################################
 
         elif opcao == "16":
-            destinos = _get_destinos()
+            destinos = get_destinos()
             if not destinos:
                 print("Erro: Não existem destinos registados.")
             else:
@@ -396,7 +376,7 @@ def menu():
                 print("Erro: " + return_code[1])
 
         elif opcao == "18":
-            voos = _get_voos()
+            voos = get_voos()
             if not voos:
                 print("Erro: Não existem voos registados.")
             else:
@@ -413,8 +393,8 @@ def menu():
                     print("Erro: " + return_code[1])
 
         elif opcao == "19":
-            voos = _get_voos()
-            destinos = _get_destinos()
+            voos = get_voos()
+            destinos = get_destinos()
             if not voos:
                 print("Erro: Não existem voos registados.")
             else:
@@ -453,7 +433,7 @@ def menu():
                     print("Erro: " + return_code[1])
 
         elif opcao == "20":
-            voos = _get_voos()
+            voos = get_voos()
             if not voos:
                 print("Erro: Não existem voos registados.")
             else:
@@ -469,10 +449,10 @@ def menu():
 #############################################################################################
 
         elif opcao == "21":
-            voos = _get_voos()
-            hoteis = _get_hoteis()
-            destinos = _get_destinos()
-            viajantes = _get_viajantes()
+            voos = get_voos()
+            hoteis = get_hoteis()
+            destinos = get_destinos()
+            viajantes = get_viajantes()
             if not voos:
                 print("Erro: Não existem voos registados.")
             elif not hoteis:
@@ -535,7 +515,7 @@ def menu():
                 print("Erro: " + return_code[1])
 
         elif opcao == "23":
-            viagens = _get_viagens()
+            viagens = get_viagens()
             if not viagens:
                 print("Erro: Não existem viagens registadas.")
             else:
@@ -552,11 +532,11 @@ def menu():
                     print("Erro: " + return_code[1])
 
         elif opcao == "24":
-            viagens = _get_viagens()
-            voos = _get_voos()
-            hoteis = _get_hoteis()
-            destinos = _get_destinos()
-            viajantes = _get_viajantes()
+            viagens = get_viagens()
+            voos = get_voos()
+            hoteis = get_hoteis()
+            destinos = get_destinos()
+            viajantes = get_viajantes()
             if not viagens:
                 print("Erro: Não existem viagens registadas.")
             else:
@@ -604,7 +584,7 @@ def menu():
                     print("Erro: " + return_code[1])
 
         elif opcao == "25":
-            viagens = _get_viagens()
+            viagens = get_viagens()
             if not viagens:
                 print("Erro: Não existem viagens registadas.")
             else:
