@@ -44,7 +44,7 @@ def adicionar_hotel(nome_hotel, local, preco, tipo_hotel):
 def ver_hoteis():
     _carregar()
     if not hoteis:
-        log.warning("Tentativa de listar hoteis: nenhum hotel registado.")
+        log.error("Tentativa de listar hoteis: nenhum hotel registado.")
         return 404, "Não existem hoteis registados."
     log.info(f"Listagem de hoteis: {len(hoteis)} hotel(is) encontrado(s).")
     return 200, hoteis
@@ -53,7 +53,7 @@ def ver_hoteis():
 def consultar_hotel(id):
     _carregar()
     if not hoteis:
-        log.warning("Tentativa de consultar hotel: nenhum hotel registado.")
+        log.error("Tentativa de consultar hotel: nenhum hotel registado.")
         return 404, "Não existem hoteis registados."
 
     print("\n=== CONSULTAR HOTEL ===")
@@ -62,14 +62,14 @@ def consultar_hotel(id):
             log.info(f"Hotel consultado: id={id}, nome={hotel['nome']}.")
             return 200, hotel
 
-    log.warning(f"Hotel não encontrado: id={id}.")
+    log.error(f"Hotel não encontrado: id={id}.")
     return 404, "Hotel não encontrado."
 
 
 def atualizar_hotel(id, nome_hotel, local, preco, tipo_hotel):
     _carregar()
     if not hoteis:
-        log.warning("Tentativa de atualizar hotel: nenhum hotel registado.")
+        log.error("Tentativa de atualizar hotel: nenhum hotel registado.")
         return 404, "Não existem hoteis registados."
 
     for hotel in hoteis:
@@ -82,14 +82,14 @@ def atualizar_hotel(id, nome_hotel, local, preco, tipo_hotel):
             log.info(f"Hotel atualizado: id={id}, novo nome={nome_hotel}, novo local={local}.")
             return 200, hoteis
 
-    log.warning(f"Tentativa de atualizar hotel não encontrado: id={id}.")
+    log.error(f"Tentativa de atualizar hotel não encontrado: id={id}.")
     return 404, hoteis
 
 
 def remover_hotel(id):
     _carregar()
     if not hoteis:
-        log.warning("Tentativa de remover hotel: nenhum hotel registado.")
+        log.error("Tentativa de remover hotel: nenhum hotel registado.")
         return 404, "Não existem hoteis registados."
 
     print("\n=== REMOVER HOTEL ===")
@@ -100,7 +100,7 @@ def remover_hotel(id):
             log.info(f"Hotel removido: id={id}.")
             return 200, hoteis
 
-    log.warning(f"Tentativa de remover hotel não encontrado: id={id}.")
+    log.error(f"Tentativa de remover hotel não encontrado: id={id}.")
     return 404, "Hotel não encontrado."
 
 #############################################################################################
