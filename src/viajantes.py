@@ -1,7 +1,6 @@
 import json
 import os
-from utils import isEqual
-from utils import get_logger
+from utils import isEqual, get_logger
 
 FICHEIRO = "dados_viajantes.json"
 log = get_logger("viajantes")
@@ -43,7 +42,7 @@ def adicionar_viajante(nome, data_nascimento, nacionalidade, telefone, email, NI
 def ver_viajantes():
     _carregar()
     if not viajantes:
-        log.warning("Tentativa de listar viajantes: nenhum viajante registado.")
+        log.error("Tentativa de listar viajantes: nenhum viajante registado.")
         return 404, "Não existem utilizadores registados."
     log.info(f"Listagem de viajantes: {len(viajantes)} viajante(s) encontrado(s).")
     return 200, viajantes
@@ -52,11 +51,11 @@ def ver_viajantes():
 def consultar_viajantes(nome):
     _carregar()
     if not viajantes:
-        log.warning("Tentativa de consultar viajante: nenhum viajante registado.")
+        log.error("Tentativa de consultar viajante: nenhum viajante registado.")
         return 404, "Não existem utilizadores registados."
 
     if not nome:
-        log.warning("Tentativa de consultar viajante com nome vazio.")
+        log.error("Tentativa de consultar viajante com nome vazio.")
         return 400, "Viajante não encontrado."
 
     for viajante in viajantes:
@@ -64,17 +63,17 @@ def consultar_viajantes(nome):
             log.info(f"Viajante consultado: nome={viajante['nome']}.")
             return 200, viajante
 
-    log.warning(f"Viajante não encontrado: nome={nome}.")
+    log.error(f"Viajante não encontrado: nome={nome}.")
     return 404, "Viajante não encontrado."
 
 def atualizar_viajantes(nome_procurar, nome, data_nascimento, nacionalidade, telefone, email, NIF, interesses, orcamento):
     _carregar()
     if not viajantes:
-        log.warning("Tentativa de atualizar viajante: nenhum viajante registado.")
+        log.error("Tentativa de atualizar viajante: nenhum viajante registado.")
         return 404, "Não existem utilizadores registados."
 
     if not nome_procurar:
-        log.warning("Tentativa de atualizar viajante com nome vazio.")
+        log.error("Tentativa de atualizar viajante com nome vazio.")
         return 400, "Viajante não encontrado."
 
     for viajante in viajantes:
@@ -91,14 +90,14 @@ def atualizar_viajantes(nome_procurar, nome, data_nascimento, nacionalidade, tel
             log.info(f"Viajante atualizado: nome anterior={nome_procurar}, novo nome={nome}, NIF={NIF}.")
             return 200, viajantes
 
-    log.warning(f"Tentativa de atualizar viajante não encontrado: nome={nome_procurar}.")
+    log.error(f"Tentativa de atualizar viajante não encontrado: nome={nome_procurar}.")
     return 404, "Utilizador não encontrado."
 
 
 def remover_viajantes(nome_remover):
     _carregar()
     if not viajantes:
-        log.warning("Tentativa de remover viajante: nenhum viajante registado.")
+        log.error("Tentativa de remover viajante: nenhum viajante registado.")
         return 404, "Não existem utilizadores registados."
 
     print("\n=== REMOVER VIAJANTE ===")
@@ -109,7 +108,7 @@ def remover_viajantes(nome_remover):
             log.info(f"Viajante removido: nome={nome_remover}.")
             return 200, viajantes
 
-    log.warning(f"Tentativa de remover viajante não encontrado: nome={nome_remover}.")
+    log.error(f"Tentativa de remover viajante não encontrado: nome={nome_remover}.")
     return 404, "Utilizador não encontrado"
 
 ############################################################################################
