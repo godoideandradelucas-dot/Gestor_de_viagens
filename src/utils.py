@@ -163,3 +163,29 @@ def mostrar_viagens_disponiveis(viagens):
 def mostrar_nifs_disponiveis(viajantes):
     info = ", ".join(v["NIF"] + " (" + v["nome"] + ")" for v in viajantes)
     print("NIFs disponíveis: " + info)
+
+
+def get_destinos():
+    from destino import ver_destinos
+    rc = ver_destinos()
+    return rc[1] if rc[0] == 200 else []
+
+def get_hoteis():
+    from hotel import ver_hoteis
+    rc = ver_hoteis()
+    return rc[1] if rc[0] == 200 else []
+
+def get_voos():
+    from voo import ver_voos
+    rc = ver_voos()
+    return rc[1] if rc[0] == 200 else []
+
+def get_viajantes():
+    from viajantes import ver_viajantes
+    rc = ver_viajantes()
+    return rc[1] if rc[0] == 200 else []
+
+def get_viagens():
+    from viagem import ver_viagens
+    rc = ver_viagens()
+    return rc[1] if rc[0] == 200 else []
