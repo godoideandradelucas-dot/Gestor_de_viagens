@@ -45,7 +45,7 @@ def adicionar_viagem(id_voo_ida, id_voo_volta, lista_id_viajantes, id_hotel, id_
 def ver_viagens():
     _carregar()
     if not viagens:
-        log.warning("Tentativa de listar viagens: nenhuma viagem registada.")
+        log.error("Tentativa de listar viagens: nenhuma viagem registada.")
         return 404, "Não existem viagens registadas."
     log.info(f"Listagem de viagens: {len(viagens)} viagem(ns) encontrada(s).")
     return 200, viagens
@@ -54,7 +54,7 @@ def ver_viagens():
 def consultar_viagem(id):
     _carregar()
     if not viagens:
-        log.warning("Tentativa de consultar viagem: nenhuma viagem registada.")
+        log.error("Tentativa de consultar viagem: nenhuma viagem registada.")
         return 404, "Não existem viagens registadas."
 
     print("\n=== CONSULTAR VIAGEM ===")
@@ -63,14 +63,14 @@ def consultar_viagem(id):
             log.info(f"Viagem consultada: id={id}.")
             return 200, viagem
 
-    log.warning(f"Viagem não encontrada: id={id}.")
+    log.error(f"Viagem não encontrada: id={id}.")
     return 404, "Viagem não encontrada."
 
 
 def atualizar_viagem(id, id_voo_ida, id_voo_volta, lista_id_viajantes, id_hotel, id_destino):
     _carregar()
     if not viagens:
-        log.warning("Tentativa de atualizar viagem: nenhuma viagem registada.")
+        log.error("Tentativa de atualizar viagem: nenhuma viagem registada.")
         return 404, "Não existem viagens registadas."
 
     for viagem in viagens:
@@ -84,14 +84,14 @@ def atualizar_viagem(id, id_voo_ida, id_voo_volta, lista_id_viajantes, id_hotel,
             log.info(f"Viagem atualizada: id={id}, novo voo_ida={id_voo_ida}, novo hotel={id_hotel}, novo destino={id_destino}.")
             return 200, viagens
 
-    log.warning(f"Tentativa de atualizar viagem não encontrada: id={id}.")
+    log.error(f"Tentativa de atualizar viagem não encontrada: id={id}.")
     return 404, "Viagem não encontrada."
 
 
 def remover_viagem(id):
     _carregar()
     if not viagens:
-        log.warning("Tentativa de remover viagem: nenhuma viagem registada.")
+        log.error("Tentativa de remover viagem: nenhuma viagem registada.")
         return 404, "Não existem viagens registadas."
 
     print("\n=== REMOVER VIAGEM ===")
@@ -102,7 +102,7 @@ def remover_viagem(id):
             log.info(f"Viagem removida: id={id}.")
             return 200, viagens
 
-    log.warning(f"Tentativa de remover viagem não encontrada: id={id}.")
+    log.error(f"Tentativa de remover viagem não encontrada: id={id}.")
     return 404, "Viagem não encontrada."
 
 #############################################################################################
