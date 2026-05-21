@@ -46,7 +46,7 @@ def adicionar_voo(companhia, origem, id_destino, data_partida, data_chegada, pre
 def ver_voos():
     _carregar()
     if not voos:
-        log.warning("Tentativa de listar voos: nenhum voo registado.")
+        log.error("Tentativa de listar voos: nenhum voo registado.")
         return 404, "Não existem voos registados."
     log.info(f"Listagem de voos: {len(voos)} voo(s) encontrado(s).")
     return 200, voos
@@ -55,7 +55,7 @@ def ver_voos():
 def consultar_voo(id):
     _carregar()
     if not voos:
-        log.warning("Tentativa de consultar voo: nenhum voo registado.")
+        log.error("Tentativa de consultar voo: nenhum voo registado.")
         return 404, "Não existem voos registados."
 
     print("\n=== CONSULTAR VOO ===")
@@ -64,14 +64,14 @@ def consultar_voo(id):
             log.info(f"Voo consultado: id={id}, companhia={voo['companhia']}.")
             return 200, voo
 
-    log.warning(f"Voo não encontrado: id={id}.")
+    log.error(f"Voo não encontrado: id={id}.")
     return 404, "Voo não encontrado."
 
 
 def atualizar_voo(id, companhia, origem, id_destino, data_partida, data_chegada, preco):
     _carregar()
     if not voos:
-        log.warning("Tentativa de atualizar voo: nenhum voo registado.")
+        log.error("Tentativa de atualizar voo: nenhum voo registado.")
         return 404, "Não existem voos registados."
 
     for voo in voos:
@@ -86,14 +86,14 @@ def atualizar_voo(id, companhia, origem, id_destino, data_partida, data_chegada,
             log.info(f"Voo atualizado: id={id}, nova companhia={companhia}, nova origem={origem}.")
             return 200, voos
 
-    log.warning(f"Tentativa de atualizar voo não encontrado: id={id}.")
+    log.error(f"Tentativa de atualizar voo não encontrado: id={id}.")
     return 404, "Voo não encontrado."
 
 
 def remover_voo(id):
     _carregar()
     if not voos:
-        log.warning("Tentativa de remover voo: nenhum voo registado.")
+        log.error("Tentativa de remover voo: nenhum voo registado.")
         return 404, "Não existem voos registados."
 
     print("\n=== REMOVER VOO ===")
@@ -104,7 +104,7 @@ def remover_voo(id):
             log.info(f"Voo removido: id={id}.")
             return 200, voos
 
-    log.warning(f"Tentativa de remover voo não encontrado: id={id}.")
+    log.error(f"Tentativa de remover voo não encontrado: id={id}.")
     return 404, "Voo não encontrado."
 
 #############################################################################################
