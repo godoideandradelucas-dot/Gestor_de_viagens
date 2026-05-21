@@ -44,7 +44,7 @@ def adicionar_destino(pais, cidade, tipo, atracoes):
 def ver_destinos():
     _carregar()
     if not destinos:
-        log.warning("Tentativa de listar destinos: nenhum destino registado.")
+        log.error("Tentativa de listar destinos: nenhum destino registado.")
         return 404, "Não existem destinos registados."
     log.info(f"Listagem de destinos: {len(destinos)} destino(s) encontrado(s).")
     return 200, destinos
@@ -53,7 +53,7 @@ def ver_destinos():
 def consultar_destinos(id):
     _carregar()
     if not destinos:
-        log.warning("Tentativa de consultar destino: nenhum destino registado.")
+        log.error("Tentativa de consultar destino: nenhum destino registado.")
         return 404, "Não existem destinos registados."
 
     print("\n=== CONSULTAR DESTINO ===")
@@ -62,14 +62,14 @@ def consultar_destinos(id):
             log.info(f"Destino consultado: id={id}, cidade={destino['cidade']}.")
             return 200, destino
 
-    log.warning(f"Destino não encontrado: id={id}.")
+    log.error(f"Destino não encontrado: id={id}.")
     return 404, "Destino não encontrado."
 
 
 def atualizar_destino(id, pais, cidade, tipo, atracoes):
     _carregar()
     if not destinos:
-        log.warning("Tentativa de atualizar destino: nenhum destino registado.")
+        log.error("Tentativa de atualizar destino: nenhum destino registado.")
         return 404, "Não existem destinos registados."
 
     for destino in destinos:
@@ -82,14 +82,14 @@ def atualizar_destino(id, pais, cidade, tipo, atracoes):
             log.info(f"Destino atualizado: id={id}, nova cidade={cidade}, novo pais={pais}.")
             return 200, destinos
 
-    log.warning(f"Tentativa de atualizar destino não encontrado: id={id}.")
+    log.error(f"Tentativa de atualizar destino não encontrado: id={id}.")
     return 404, "Destino não encontrado."
 
 
 def remover_destino(id):
     _carregar()
     if not destinos:
-        log.warning("Tentativa de remover destino: nenhum destino registado.")
+        log.error("Tentativa de remover destino: nenhum destino registado.")
         return 404, "Não existem destinos registados."
 
     print("\n=== REMOVER DESTINO ===")
@@ -100,7 +100,7 @@ def remover_destino(id):
             log.info(f"Destino removido: id={id}.")
             return 200, destinos
 
-    log.warning(f"Tentativa de remover destino não encontrado: id={id}.")
+    log.error(f"Tentativa de remover destino não encontrado: id={id}.")
     return 404, "Destino não encontrado"
 
 #############################################################################################
