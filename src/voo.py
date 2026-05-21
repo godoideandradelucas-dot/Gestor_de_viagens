@@ -1,7 +1,9 @@
 import json
 import os
+from utils import get_logger
 
 FICHEIRO = "dados_voos.json"
+log = get_logger("voo")
 
 def _carregar():
     global voos, _proximo_id_voo
@@ -37,32 +39,39 @@ def adicionar_voo(companhia, origem, id_destino, data_partida, data_chegada, pre
     _proximo_id_voo += 1
     voos.append(voo)
     _guardar()
+    log.info(f"Voo adicionado: id={voo['id']}, companhia={companhia}, origem={origem}, destino_id={id_destino}, partida={data_partida}.")
     return 201, voo
 
 
 def ver_voos():
     _carregar()
     if not voos:
+        log.error("Tentativa de listar voos: nenhum voo registado.")
         return 404, "Não existem voos registados."
+    log.info(f"Listagem de voos: {len(voos)} voo(s) encontrado(s).")
     return 200, voos
 
 
 def consultar_voo(id):
     _carregar()
     if not voos:
+        log.error("Tentativa de consultar voo: nenhum voo registado.")
         return 404, "Não existem voos registados."
 
     print("\n=== CONSULTAR VOO ===")
     for voo in voos:
         if voo["id"] == id:
+            log.info(f"Voo consultado: id={id}, companhia={voo['companhia']}.")
             return 200, voo
 
+    log.error(f"Voo não encontrado: id={id}.")
     return 404, "Voo não encontrado."
 
 
 def atualizar_voo(id, companhia, origem, id_destino, data_partida, data_chegada, preco):
     _carregar()
     if not voos:
+        log.error("Tentativa de atualizar voo: nenhum voo registado.")
         return 404, "Não existem voos registados."
 
     for voo in voos:
@@ -74,14 +83,17 @@ def atualizar_voo(id, companhia, origem, id_destino, data_partida, data_chegada,
             voo["data_chegada"] = data_chegada
             voo["preco"] = preco
             _guardar()
+            log.info(f"Voo atualizado: id={id}, nova companhia={companhia}, nova origem={origem}.")
             return 200, voos
 
+    log.error(f"Tentativa de atualizar voo não encontrado: id={id}.")
     return 404, "Voo não encontrado."
 
 
 def remover_voo(id):
     _carregar()
     if not voos:
+        log.error("Tentativa de remover voo: nenhum voo registado.")
         return 404, "Não existem voos registados."
 
     print("\n=== REMOVER VOO ===")
@@ -89,8 +101,10 @@ def remover_voo(id):
         if voo["id"] == id:
             voos.remove(voo)
             _guardar()
+            log.info(f"Voo removido: id={id}.")
             return 200, voos
 
+    log.error(f"Tentativa de remover voo não encontrado: id={id}.")
     return 404, "Voo não encontrado."
 
 #############################################################################################

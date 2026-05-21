@@ -1,7 +1,9 @@
 import json
 import os
+from utils import get_logger
 
 FICHEIRO = "dados_destinos.json"
+log = get_logger("destino")
 
 def _carregar():
     global destinos, _proximo_id_destino
@@ -35,32 +37,39 @@ def adicionar_destino(pais, cidade, tipo, atracoes):
     _proximo_id_destino += 1
     destinos.append(destino)
     _guardar()
+    log.info(f"Destino adicionado: id={destino['id']}, cidade={cidade}, pais={pais}, tipo={tipo}")
     return 201, destino
 
 
 def ver_destinos():
     _carregar()
     if not destinos:
+        log.error("Tentativa de listar destinos: nenhum destino registado.")
         return 404, "Não existem destinos registados."
+    log.info(f"Listagem de destinos: {len(destinos)} destino(s) encontrado(s).")
     return 200, destinos
 
 
 def consultar_destinos(id):
     _carregar()
     if not destinos:
+        log.error("Tentativa de consultar destino: nenhum destino registado.")
         return 404, "Não existem destinos registados."
 
     print("\n=== CONSULTAR DESTINO ===")
     for destino in destinos:
         if destino["id"] == id:
+            log.info(f"Destino consultado: id={id}, cidade={destino['cidade']}.")
             return 200, destino
 
+    log.error(f"Destino não encontrado: id={id}.")
     return 404, "Destino não encontrado."
 
 
 def atualizar_destino(id, pais, cidade, tipo, atracoes):
     _carregar()
     if not destinos:
+        log.error("Tentativa de atualizar destino: nenhum destino registado.")
         return 404, "Não existem destinos registados."
 
     for destino in destinos:
@@ -70,14 +79,17 @@ def atualizar_destino(id, pais, cidade, tipo, atracoes):
             destino["tipo"] = tipo
             destino["atracoes"] = atracoes
             _guardar()
+            log.info(f"Destino atualizado: id={id}, nova cidade={cidade}, novo pais={pais}.")
             return 200, destinos
 
+    log.error(f"Tentativa de atualizar destino não encontrado: id={id}.")
     return 404, "Destino não encontrado."
 
 
 def remover_destino(id):
     _carregar()
     if not destinos:
+        log.error("Tentativa de remover destino: nenhum destino registado.")
         return 404, "Não existem destinos registados."
 
     print("\n=== REMOVER DESTINO ===")
@@ -85,8 +97,10 @@ def remover_destino(id):
         if destino["id"] == id:
             destinos.remove(destino)
             _guardar()
+            log.info(f"Destino removido: id={id}.")
             return 200, destinos
 
+    log.error(f"Tentativa de remover destino não encontrado: id={id}.")
     return 404, "Destino não encontrado"
 
 #############################################################################################
