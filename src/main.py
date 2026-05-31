@@ -1,610 +1,456 @@
-from destino import adicionar_destino, ver_destinos, consultar_destinos, atualizar_destino, remover_destino, validar_pais, validar_cidade, validar_tipo, validar_atracoes
-from hotel import adicionar_hotel, ver_hoteis, consultar_hotel, atualizar_hotel, remover_hotel, validar_hotel, validar_local, validar_preco, validar_tipo_hotel
-from viajantes import adicionar_viajante, ver_viajantes, consultar_viajantes, atualizar_viajantes, remover_viajantes, validar_nome, validar_nacionalidade, validar_interesses, validar_orcamento
-from voo import adicionar_voo, ver_voos, consultar_voo, atualizar_voo, remover_voo, validar_companhia, validar_origem, validar_preco_voo
-from viagem import adicionar_viagem, ver_viagens, consultar_viagem, atualizar_viagem, remover_viagem, validar_lista_nifs
-from utils import validar_data, validar_telefone, validar_email, validar_NIF, validar_id, validar_id_destino, validar_id_hotel, validar_id_voo, validar_id_voo_volta, mostrar_destinos_disponiveis, mostrar_hoteis_disponiveis, mostrar_voos_disponiveis, mostrar_nifs_disponiveis, mostrar_viagens_disponiveis
-from utils import get_logger, get_destinos, get_hoteis, get_voos, get_viajantes, get_viagens
-
-log = get_logger("main")
-
-def menu():
-    log.info("Sistema iniciado.")
-    while True:
-        print("\n----------------------------- Gestor de Viagens ----------------------------")
-        print("1 - Adicionar viajante     6 - Adicionar destino     11 - Adicionar hotel")
-        print("2 - Ver viajantes          7 - Ver destinos          12 - Ver hoteis")
-        print("3 - Consultar viajante     8 - Consultar destino     13 - Consultar hotel")
-        print("4 - Atualizar viajante     9 - Atualizar destino     14 - Atualizar hotel")
-        print("5 - Remover viajante       10 - Remover destino      15 - Remover hotel")
-        print("")
-        print("16 - Adicionar voo         21 - Adicionar viagem")
-        print("17 - Ver voos              22 - Ver viagens")
-        print("18 - Consultar voo         23 - Consultar viagem")
-        print("19 - Atualizar voo         24 - Atualizar viagem")
-        print("20 - Remover voo           25 - Remover viagem")
-        print("")
-        print("                                0 - sair")
-        print("----------------------------------------------------------------------------")
-        opcao = input("Escolha uma opção:")
-        log.info(f"Opção selecionada: {opcao}.")
-
-        if opcao == "1":
-            print("\n=== CADASTRAR VIAJANTE ===")
-            nome = input("Digite seu nome:")
-            nome = validar_nome(nome)
-
-            data_nascimento = input("Digite sua data de nascimento(DD/MM/AAAA):")
-            data_nascimento = validar_data(data_nascimento)
-
-            nacionalidade = input("Digite sua nacionalidade:")
-            nacionalidade = validar_nacionalidade(nacionalidade)
-
-            telefone = input("Digite seu telefone:")
-            telefone = validar_telefone(telefone)
-
-            email = input("Digite seu email(@gmail.com - @hotmail.com - @outlook.com):")
-            email = validar_email(email)
-
-            NIF = input("Digite seu NIF:")
-            NIF = validar_NIF(NIF)
-
-            interesses = input("Digite seus interesses(ex: praias, natureza, montanhas):")
-            interesses = validar_interesses(interesses)
-
-            orcamento = input("Digite seu orçamento(€):")
-            orcamento = validar_orcamento(orcamento)
-
-            return_code = adicionar_viajante(nome, data_nascimento, nacionalidade, telefone, email, NIF, interesses, orcamento)
-            if return_code[0] == 201:
-                print("Viajante criado com sucesso.")
-            else:
-                log.error(f"Erro ao criar viajante: {return_code[1]}")
-                print("Erro: " + return_code[1])
-
-        elif opcao == "2":
-            return_code = ver_viajantes()
-            if return_code[0] == 200:
-                print("\n=== LISTA DE VIAJANTES ===")
-                for viajante in return_code[1]:
-                    for chave, valor in viajante.items():
-                        print(chave, ":", valor)
-                    print()
-                print("Viajantes listados com sucesso.")
-            else:
-                print("Erro: " + return_code[1])
-
-        elif opcao == "3":
-            nome = input("Nome do viajante para consultar: ").strip()
-            return_code = consultar_viajantes(nome)
-            if return_code[0] == 200:
-                print("\n=== CONSULTAR VIAJANTE ===")
-                for chave, valor in return_code[1].items():
-                    print(chave, ":", valor)
-                print()
-                print("Viajante listado com sucesso.")
-            else:
-                print("Erro: " + return_code[1])
-
-        elif opcao == "4":
-            viajantes = get_viajantes()
-            if not viajantes:
-                print("Erro: Não existem utilizadores registados.")
-            else:
-                print("\n=== ATUALIZAR VIAJANTE ===")
-                nome_procurar = input("Digite o nome do viajante para atualizar: ").strip()
-                print("Digite os novos dados:")
-
-                nome = input("Digite o novo nome:")
-                nome = validar_nome(nome)
-
-                data_nascimento = input("Digite a nova data de nascimento(DD/MM/AAAA):")
-                data_nascimento = validar_data(data_nascimento)
-
-                nacionalidade = input("Digite a nova nacionalidade:")
-                nacionalidade = validar_nacionalidade(nacionalidade)
-
-                telefone = input("Digite o novo telefone:")
-                telefone = validar_telefone(telefone)
-
-                email = input("Digite o novo email:")
-                email = validar_email(email)
-
-                NIF = input("Digite o novo NIF:")
-                NIF = validar_NIF(NIF)
-
-                interesses = input("Digite os novos interesses:")
-                interesses = validar_interesses(interesses)
-
-                orcamento = input("Digite o novo orçamento(€):")
-                orcamento = validar_orcamento(orcamento)
-
-                return_code = atualizar_viajantes(nome_procurar, nome, data_nascimento, nacionalidade, telefone, email, NIF, interesses, orcamento)
-                if return_code[0] == 200:
-                    print("Viajante atualizado com sucesso.")
-                else:
-                    log.error(f"Erro ao atualizar viajante '{nome_procurar}': {return_code[1]}")
-                    print("Erro: " + return_code[1])
-
-        elif opcao == "5":
-            nome_remover = input("Nome do viajante para remover: ")
-            return_code = remover_viajantes(nome_remover)
-            if return_code[0] == 200:
-                print("Viajante removido com sucesso.")
-            else:
-                log.error(f"Erro ao remover viajante '{nome_remover}': {return_code[1]}")
-                print("Erro: " + return_code[1])
-
-#############################################################################################
-
-        elif opcao == "6":
-            print("\n=== ADICIONAR DESTINO ===")
-            pais = input("Digite o nome do país:")
-            pais = validar_pais(pais)
-
-            cidade = input("Digite o nome da cidade:")
-            cidade = validar_cidade(cidade)
-
-            tipo = input("Digite o tipo de destino (praia, urbano, montanha, natureza):")
-            tipo = validar_tipo(tipo)
-
-            atracoes = input("Digite as atrações principais(ex: museus, praias, castelos):")
-            atracoes = validar_atracoes(atracoes)
-
-            return_code = adicionar_destino(pais, cidade, tipo, atracoes)
-            if return_code[0] == 201:
-                print("Destino criado com sucesso.")
-            else:
-                log.error(f"Erro ao criar destino: {return_code[1]}")
-                print("Erro: " + return_code[1])
-
-        elif opcao == "7":
-            return_code = ver_destinos()
-            if return_code[0] == 200:
-                print("\n=== LISTA DE DESTINOS ===")
-                for destino in return_code[1]:
-                    for chave, valor in destino.items():
-                        print(chave, ":", valor)
-                    print()
-                print("Destinos listados com sucesso.")
-            else:
-                print("Erro: " + return_code[1])
-
-        elif opcao == "8":
-            destinos = get_destinos()
-            if not destinos:
-                print("Erro: Não existem destinos registados.")
-            else:
-                mostrar_destinos_disponiveis(destinos)
-                id = validar_id("Digite o ID do destino para consultar: ")
-                return_code = consultar_destinos(id)
-                if return_code[0] == 200:
-                    print("\n=== CONSULTAR DESTINO ===")
-                    for chave, valor in return_code[1].items():
-                        print(chave, ":", valor)
-                    print()
-                    print("Destino listado com sucesso.")
-                else:
-                    log.error(f"Erro ao consultar destino id={id}: {return_code[1]}")
-                    print("Erro: " + return_code[1])
-
-        elif opcao == "9":
-            destinos = get_destinos()
-            if not destinos:
-                print("Erro: Não existem destinos registados.")
-            else:
-                print("\n=== ATUALIZAR DESTINO ===")
-                mostrar_destinos_disponiveis(destinos)
-                id = validar_id("Digite o ID do destino para atualizar: ")
-                print("Digite os novos dados:")
-
-                pais = input("Digite o novo país:")
-                pais = validar_pais(pais)
-
-                cidade = input("Digite a nova cidade:")
-                cidade = validar_cidade(cidade)
-
-                tipo = input("Digite o novo tipo:")
-                tipo = validar_tipo(tipo)
-
-                atracoes = input("Digite as novas atrações:")
-                atracoes = validar_atracoes(atracoes)
-
-                return_code = atualizar_destino(id, pais, cidade, tipo, atracoes)
-                if return_code[0] == 200:
-                    print("Destino atualizado com sucesso.")
-                else:
-                    log.error(f"Erro ao atualizar destino id={id}: {return_code[1]}")
-                    print("Erro: " + return_code[1])
-
-        elif opcao == "10":
-            destinos = get_destinos()
-            if not destinos:
-                print("Erro: Não existem destinos registados.")
-            else:
-                mostrar_destinos_disponiveis(destinos)
-                id = validar_id("Digite o ID do destino para remover: ")
-                return_code = remover_destino(id)
-                if return_code[0] == 200:
-                    print("Destino removido com sucesso.")
-                else:
-                    log.error(f"Erro ao remover destino id={id}: {return_code[1]}")
-                    print("Erro: " + return_code[1])
-
-#############################################################################################
-
-        elif opcao == "11":
-            print("\n=== ADICIONAR HOTEL ===")
-            nome_hotel = input("Digite o nome do hotel:")
-            nome_hotel = validar_hotel(nome_hotel)
-
-            local = input("Digite a localizacao(cidade):")
-            local = validar_local(local)
-
-            preco = input("Digite o preço por noite(€):")
-            preco = validar_preco(preco)
-
-            tipo_hotel = input("Digite o tipo de hospedagem (hotel, pousada, resort):")
-            tipo_hotel = validar_tipo_hotel(tipo_hotel)
-
-            return_code = adicionar_hotel(nome_hotel, local, preco, tipo_hotel)
-            if return_code[0] == 201:
-                print("Hotel criado com sucesso.")
-            else:
-                log.error(f"Erro ao criar hotel: {return_code[1]}")
-                print("Erro: " + return_code[1])
-
-        elif opcao == "12":
-            return_code = ver_hoteis()
-            if return_code[0] == 200:
-                print("\n=== LISTA DE HOTÉIS ===")
-                for hotel in return_code[1]:
-                    for chave, valor in hotel.items():
-                        print(chave, ":", valor)
-                    print()
-                print("Hoteis listados com sucesso.")
-            else:
-                print("Erro: " + return_code[1])
-
-        elif opcao == "13":
-            hoteis = get_hoteis()
-            if not hoteis:
-                print("Erro: Não existem hoteis registados.")
-            else:
-                mostrar_hoteis_disponiveis(hoteis)
-                id = validar_id("Digite o ID do hotel para consultar: ")
-                return_code = consultar_hotel(id)
-                if return_code[0] == 200:
-                    for chave, valor in return_code[1].items():
-                        print(chave, ":", valor)
-                    print()
-                    print("Hotel listado com sucesso.")
-                else:
-                    log.error(f"Erro ao consultar hotel id={id}: {return_code[1]}")
-                    print("Erro: " + return_code[1])
-
-        elif opcao == "14":
-            hoteis = get_hoteis()
-            if not hoteis:
-                print("Erro: Não existem hoteis registados.")
-            else:
-                print("\n=== ATUALIZAR HOTEL ===")
-                mostrar_hoteis_disponiveis(hoteis)
-                id = validar_id("Digite o ID do hotel para atualizar: ")
-                print("Digite os novos dados:")
-
-                nome_hotel = input("Digite o novo nome do hotel:")
-                nome_hotel = validar_hotel(nome_hotel)
-
-                local = input("Digite a nova localizacao(cidade):")
-                local = validar_local(local)
-
-                preco = input("Digite o novo preço por noite(€):")
-                preco = validar_preco(preco)
-
-                tipo_hotel = input("Digite o novo tipo de hospedagem (hotel, pousada, resort):")
-                tipo_hotel = validar_tipo_hotel(tipo_hotel)
-
-                return_code = atualizar_hotel(id, nome_hotel, local, preco, tipo_hotel)
-                if return_code[0] == 200:
-                    print("Hotel atualizado com sucesso.")
-                else:
-                    log.error(f"Erro ao atualizar hotel id={id}: {return_code[1]}")
-                    print("Erro: " + return_code[1])
-
-        elif opcao == "15":
-            hoteis = get_hoteis()
-            if not hoteis:
-                print("Erro: Não existem hoteis registados.")
-            else:
-                mostrar_hoteis_disponiveis(hoteis)
-                id = validar_id("Digite o ID do hotel para remover: ")
-                return_code = remover_hotel(id)
-                if return_code[0] == 200:
-                    print("Hotel removido com sucesso.")
-                else:
-                    log.error(f"Erro ao remover hotel id={id}: {return_code[1]}")
-                    print("Erro: " + return_code[1])
-
-#############################################################################################
-
-        elif opcao == "16":
-            destinos = get_destinos()
-            if not destinos:
-                print("Erro: Não existem destinos registados.")
-            else:
-                print("\n=== ADICIONAR VOO ===")
-                companhia = input("Digite o nome da companhia aérea:")
-                companhia = validar_companhia(companhia)
-
-                origem = input("Digite a cidade de origem:")
-                origem = validar_origem(origem)
-
-                mostrar_destinos_disponiveis(destinos)
-                id_destino, erro = validar_id_destino("Digite o ID do destino: ", destinos)
-                if erro:
-                    log.error(f"Erro ao selecionar destino para voo: {erro}")
-                    print("Erro: " + erro)
-                    continue
-
-                data_partida = input("Digite a data de partida (DD/MM/AAAA):")
-                data_partida = validar_data(data_partida)
-
-                data_chegada = input("Digite a data de chegada (DD/MM/AAAA):")
-                data_chegada = validar_data(data_chegada)
-
-                preco = input("Digite o preço do voo (€):")
-                preco = validar_preco_voo(preco)
-
-                return_code = adicionar_voo(companhia, origem, id_destino, data_partida, data_chegada, preco)
-                if return_code[0] == 201:
-                    print("Voo adicionado com sucesso.")
-                else:
-                    log.error(f"Erro ao adicionar voo: {return_code[1]}")
-                    print("Erro: " + return_code[1])
-
-        elif opcao == "17":
-            return_code = ver_voos()
-            if return_code[0] == 200:
-                print("\n=== LISTA DE VOOS ===")
-                for voo in return_code[1]:
-                    for chave, valor in voo.items():
-                        print(chave, ":", valor)
-                    print()
-                print("Voos listados com sucesso.")
-            else:
-                print("Erro: " + return_code[1])
-
-        elif opcao == "18":
-            voos = get_voos()
-            if not voos:
-                print("Erro: Não existem voos registados.")
-            else:
-                mostrar_voos_disponiveis(voos)
-                id = validar_id("Digite o ID do voo para consultar: ")
-                return_code = consultar_voo(id)
-                if return_code[0] == 200:
-                    for chave, valor in return_code[1].items():
-                        print(chave, ":", valor)
-                    print()
-                    print("Voo listado com sucesso.")
-                else:
-                    log.error(f"Erro ao consultar voo id={id}: {return_code[1]}")
-                    print("Erro: " + return_code[1])
-
-        elif opcao == "19":
-            voos = get_voos()
-            destinos = get_destinos()
-            if not voos:
-                print("Erro: Não existem voos registados.")
-            else:
-                print("\n=== ATUALIZAR VOO ===")
-                mostrar_voos_disponiveis(voos)
-                id = validar_id("Digite o ID do voo para atualizar: ")
-                print("Digite os novos dados:")
-
-                companhia = input("Digite a nova companhia aérea:")
-                companhia = validar_companhia(companhia)
-
-                origem = input("Digite a nova cidade de origem:")
-                origem = validar_origem(origem)
-
-                mostrar_destinos_disponiveis(destinos)
-                id_destino, erro = validar_id_destino("Digite o novo ID do destino: ", destinos)
-                if erro:
-                    log.error(f"Erro ao selecionar destino para atualizar voo: {erro}")
-                    print("Erro: " + erro)
-                    continue
-
-                data_partida = input("Digite a nova data de partida (DD/MM/AAAA):")
-                data_partida = validar_data(data_partida)
-
-                data_chegada = input("Digite a nova data de chegada (DD/MM/AAAA):")
-                data_chegada = validar_data(data_chegada)
-
-                preco = input("Digite o novo preço do voo (€):")
-                preco = validar_preco_voo(preco)
-
-                return_code = atualizar_voo(id, companhia, origem, id_destino, data_partida, data_chegada, preco)
-                if return_code[0] == 200:
-                    print("Voo atualizado com sucesso.")
-                else:
-                    log.error(f"Erro ao atualizar voo id={id}: {return_code[1]}")
-                    print("Erro: " + return_code[1])
-
-        elif opcao == "20":
-            voos = get_voos()
-            if not voos:
-                print("Erro: Não existem voos registados.")
-            else:
-                mostrar_voos_disponiveis(voos)
-                id = validar_id("Digite o ID do voo para remover: ")
-                return_code = remover_voo(id)
-                if return_code[0] == 200:
-                    print("Voo removido com sucesso.")
-                else:
-                    log.error(f"Erro ao remover voo id={id}: {return_code[1]}")
-                    print("Erro: " + return_code[1])
-
-#############################################################################################
-
-        elif opcao == "21":
-            voos = get_voos()
-            hoteis = get_hoteis()
-            destinos = get_destinos()
-            viajantes = get_viajantes()
-            if not voos:
-                print("Erro: Não existem voos registados.")
-            elif not hoteis:
-                print("Erro: Não existem hoteis registados.")
-            elif not destinos:
-                print("Erro: Não existem destinos registados.")
-            elif not viajantes:
-                print("Erro: Não existem viajantes registados.")
-            else:
-                print("\n=== ADICIONAR VIAGEM ===")
-
-                mostrar_voos_disponiveis(voos)
-                id_voo_ida, erro = validar_id_voo("Digite o ID do voo de ida: ", voos)
-                if erro:
-                    log.error(f"Erro ao selecionar voo de ida: {erro}")
-                    print("Erro: " + erro)
-                    continue
-
-                id_voo_volta, erro = validar_id_voo_volta("Digite o ID do voo de volta: ", voos)
-                if erro:
-                    log.error(f"Erro ao selecionar voo de volta: {erro}")
-                    print("Erro: " + erro)
-                    continue
-
-                mostrar_nifs_disponiveis(viajantes)
-                lista_nifs_str = input("Digite os NIFs dos viajantes (separados por vírgula):")
-                lista_id_viajantes = validar_lista_nifs(lista_nifs_str)
-
-                mostrar_hoteis_disponiveis(hoteis)
-                id_hotel, erro = validar_id_hotel("Digite o ID do hotel: ", hoteis)
-                if erro:
-                    log.error(f"Erro ao selecionar hotel para viagem: {erro}")
-                    print("Erro: " + erro)
-                    continue
-
-                mostrar_destinos_disponiveis(destinos)
-                id_destino, erro = validar_id_destino("Digite o ID do destino: ", destinos)
-                if erro:
-                    log.error(f"Erro ao selecionar destino para viagem: {erro}")
-                    print("Erro: " + erro)
-                    continue
-
-                return_code = adicionar_viagem(id_voo_ida, id_voo_volta, lista_id_viajantes, id_hotel, id_destino)
-                if return_code[0] == 201:
-                    print("Viagem criada com sucesso.")
-                else:
-                    log.error(f"Erro ao criar viagem: {return_code[1]}")
-                    print("Erro: " + return_code[1])
-
-        elif opcao == "22":
-            return_code = ver_viagens()
-            if return_code[0] == 200:
-                print("\n=== LISTA DE VIAGENS ===")
-                for viagem in return_code[1]:
-                    for chave, valor in viagem.items():
-                        print(chave, ":", valor)
-                    print()
-                print("Viagens listadas com sucesso.")
-            else:
-                print("Erro: " + return_code[1])
-
-        elif opcao == "23":
-            viagens = get_viagens()
-            if not viagens:
-                print("Erro: Não existem viagens registadas.")
-            else:
-                mostrar_viagens_disponiveis(viagens)
-                id = validar_id("Digite o ID da viagem para consultar: ")
-                return_code = consultar_viagem(id)
-                if return_code[0] == 200:
-                    for chave, valor in return_code[1].items():
-                        print(chave, ":", valor)
-                    print()
-                    print("Viagem listada com sucesso.")
-                else:
-                    log.error(f"Erro ao consultar viagem id={id}: {return_code[1]}")
-                    print("Erro: " + return_code[1])
-
-        elif opcao == "24":
-            viagens = get_viagens()
-            voos = get_voos()
-            hoteis = get_hoteis()
-            destinos = get_destinos()
-            viajantes = get_viajantes()
-            if not viagens:
-                print("Erro: Não existem viagens registadas.")
-            else:
-                print("\n=== ATUALIZAR VIAGEM ===")
-                mostrar_viagens_disponiveis(viagens)
-                id = validar_id("Digite o ID da viagem para atualizar: ")
-                print("Digite os novos dados:")
-
-                mostrar_voos_disponiveis(voos)
-                id_voo_ida, erro = validar_id_voo("Digite o novo ID do voo de ida: ", voos)
-                if erro:
-                    log.error(f"Erro ao selecionar voo de ida para atualizar viagem: {erro}")
-                    print("Erro: " + erro)
-                    continue
-
-                id_voo_volta, erro = validar_id_voo_volta("Digite o novo ID do voo de volta: ", voos)
-                if erro:
-                    log.error(f"Erro ao selecionar voo de volta para atualizar viagem: {erro}")
-                    print("Erro: " + erro)
-                    continue
-
-                mostrar_nifs_disponiveis(viajantes)
-                lista_nifs_str = input("Digite os novos NIFs dos viajantes (separados por vírgula):")
-                lista_id_viajantes = validar_lista_nifs(lista_nifs_str)
-
-                mostrar_hoteis_disponiveis(hoteis)
-                id_hotel, erro = validar_id_hotel("Digite o novo ID do hotel: ", hoteis)
-                if erro:
-                    log.error(f"Erro ao selecionar hotel para atualizar viagem: {erro}")
-                    print("Erro: " + erro)
-                    continue
-
-                mostrar_destinos_disponiveis(destinos)
-                id_destino, erro = validar_id_destino("Digite o novo ID do destino: ", destinos)
-                if erro:
-                    log.error(f"Erro ao selecionar destino para atualizar viagem: {erro}")
-                    print("Erro: " + erro)
-                    continue
-
-                return_code = atualizar_viagem(id, id_voo_ida, id_voo_volta, lista_id_viajantes, id_hotel, id_destino)
-                if return_code[0] == 200:
-                    print("Viagem atualizada com sucesso.")
-                else:
-                    log.error(f"Erro ao atualizar viagem id={id}: {return_code[1]}")
-                    print("Erro: " + return_code[1])
-
-        elif opcao == "25":
-            viagens = get_viagens()
-            if not viagens:
-                print("Erro: Não existem viagens registadas.")
-            else:
-                mostrar_viagens_disponiveis(viagens)
-                id = validar_id("Digite o ID da viagem para remover: ")
-                return_code = remover_viagem(id)
-                if return_code[0] == 200:
-                    print("Viagem removida com sucesso.")
-                else:
-                    log.error(f"Erro ao remover viagem id={id}: {return_code[1]}")
-                    print("Erro: " + return_code[1])
-
-        elif opcao == "0":
-            log.info("Sistema encerrado pelo utilizador.")
-            print("Saindo do sistema...")
-            break
+import tkinter as tk
+from tkinter import ttk, messagebox
+
+from destino import adicionar_destino, ver_destinos, consultar_destinos, atualizar_destino, remover_destino
+from hotel import adicionar_hotel, ver_hoteis, consultar_hotel, atualizar_hotel, remover_hotel
+from viajantes import adicionar_viajante, ver_viajantes, consultar_viajantes, atualizar_viajantes, remover_viajantes
+from voo import adicionar_voo, ver_voos, consultar_voo, atualizar_voo, remover_voo
+from viagem import adicionar_viagem, ver_viagens, consultar_viagem, atualizar_viagem, remover_viagem
+from utils import get_logger
+
+logger = get_logger("main_tkinter")
+
+def mostrar_resultado(caixa_texto, conteudo):
+    caixa_texto.config(state="normal")
+    caixa_texto.delete("1.0", tk.END)
+    if isinstance(conteudo, list):
+        for item in conteudo:
+            for chave, valor in item.items():
+                caixa_texto.insert(tk.END, f"{chave}: {valor}\n")
+            caixa_texto.insert(tk.END, "-" * 30 + "\n")
+    elif isinstance(conteudo, dict):
+        for chave, valor in conteudo.items():
+            caixa_texto.insert(tk.END, f"{chave}: {valor}\n")
+    else:
+        caixa_texto.insert(tk.END, str(conteudo) + "\n")
+    caixa_texto.config(state="disabled")
+
+
+def criar_campo(frame_pai, texto_label, numero_linha):
+    tk.Label(frame_pai, text=texto_label).grid(row=numero_linha, column=0, sticky="w", padx=5, pady=2)
+    campo_entrada = tk.Entry(frame_pai, width=30)
+    campo_entrada.grid(row=numero_linha, column=1, padx=5, pady=2)
+    return campo_entrada
+
+
+# ─── ABA VIAJANTES ───────────────────────────────────────────────────────────
+
+def aba_viajantes(notebook):
+    frame_viajantes = ttk.Frame(notebook)
+    notebook.add(frame_viajantes, text="Viajantes")
+
+    frame_formulario = tk.LabelFrame(frame_viajantes, text="Dados do Viajante")
+    frame_formulario.grid(row=0, column=0, padx=10, pady=10, sticky="n")
+
+    entrada_nome          = criar_campo(frame_formulario, "Nome:",                       0)
+    entrada_nascimento    = criar_campo(frame_formulario, "Nascimento (DD/MM/AAAA):",    1)
+    entrada_nacionalidade = criar_campo(frame_formulario, "Nacionalidade:",              2)
+    entrada_telefone      = criar_campo(frame_formulario, "Telefone:",                   3)
+    entrada_email         = criar_campo(frame_formulario, "Email:",                      4)
+    entrada_nif           = criar_campo(frame_formulario, "NIF:",                        5)
+    entrada_interesses    = criar_campo(frame_formulario, "Interesses:",                 6)
+    entrada_orcamento     = criar_campo(frame_formulario, "Orçamento (€):",              7)
+
+    caixa_resultado = tk.Text(frame_viajantes, width=50, height=20, state="disabled")
+    caixa_resultado.grid(row=0, column=1, padx=10, pady=10)
+
+    def adicionar():
+        resposta = adicionar_viajante(
+            entrada_nome.get(), entrada_nascimento.get(), entrada_nacionalidade.get(),
+            entrada_telefone.get(), entrada_email.get(), entrada_nif.get(),
+            entrada_interesses.get(), entrada_orcamento.get()
+        )
+        if resposta[0] == 201:
+            messagebox.showinfo("Sucesso", "Viajante adicionado!")
+            logger.info(f"Viajante adicionado via GUI: {entrada_nome.get()}")
         else:
-            log.warning(f"Opção inválida introduzida: '{opcao}'.")
-            print("Opção inválida!")
+            messagebox.showerror("Erro", str(resposta[1]))
+
+    def ver():
+        resposta = ver_viajantes()
+        mostrar_resultado(caixa_resultado, resposta[1])
+
+    def consultar():
+        resposta = consultar_viajantes(entrada_nome.get())
+        mostrar_resultado(caixa_resultado, resposta[1])
+
+    def atualizar():
+        nome_a_procurar = entrada_nome.get()
+        resposta = atualizar_viajantes(
+            nome_a_procurar, entrada_nome.get(), entrada_nascimento.get(),
+            entrada_nacionalidade.get(), entrada_telefone.get(), entrada_email.get(),
+            entrada_nif.get(), entrada_interesses.get(), entrada_orcamento.get()
+        )
+        if resposta[0] == 200:
+            messagebox.showinfo("Sucesso", "Viajante atualizado!")
+        else:
+            messagebox.showerror("Erro", str(resposta[1]))
+
+    def remover():
+        resposta = remover_viajantes(entrada_nome.get())
+        if resposta[0] == 200:
+            messagebox.showinfo("Sucesso", "Viajante removido!")
+        else:
+            messagebox.showerror("Erro", str(resposta[1]))
+
+    frame_botoes = tk.Frame(frame_viajantes)
+    frame_botoes.grid(row=1, column=0, columnspan=2, pady=5)
+    tk.Button(frame_botoes, text="Adicionar", width=12, command=adicionar).pack(side="left", padx=4)
+    tk.Button(frame_botoes, text="Ver Todos", width=12, command=ver).pack(side="left", padx=4)
+    tk.Button(frame_botoes, text="Consultar", width=12, command=consultar).pack(side="left", padx=4)
+    tk.Button(frame_botoes, text="Atualizar", width=12, command=atualizar).pack(side="left", padx=4)
+    tk.Button(frame_botoes, text="Remover",   width=12, command=remover).pack(side="left", padx=4)
 
 
-if __name__ == '__main__':
-    menu()
+# ─── ABA DESTINOS ────────────────────────────────────────────────────────────
+
+def aba_destinos(notebook):
+    frame_destinos = ttk.Frame(notebook)
+    notebook.add(frame_destinos, text="Destinos")
+
+    frame_formulario = tk.LabelFrame(frame_destinos, text="Dados do Destino")
+    frame_formulario.grid(row=0, column=0, padx=10, pady=10, sticky="n")
+
+    entrada_id       = criar_campo(frame_formulario, "ID (consultar/atualizar/remover):", 0)
+    entrada_pais     = criar_campo(frame_formulario, "País:",     1)
+    entrada_cidade   = criar_campo(frame_formulario, "Cidade:",   2)
+    entrada_tipo     = criar_campo(frame_formulario, "Tipo:",     3)
+    entrada_atracoes = criar_campo(frame_formulario, "Atrações:", 4)
+
+    caixa_resultado = tk.Text(frame_destinos, width=50, height=20, state="disabled")
+    caixa_resultado.grid(row=0, column=1, padx=10, pady=10)
+
+    def adicionar():
+        resposta = adicionar_destino(
+            entrada_pais.get(), entrada_cidade.get(),
+            entrada_tipo.get(), entrada_atracoes.get()
+        )
+        if resposta[0] == 201:
+            messagebox.showinfo("Sucesso", "Destino adicionado!")
+        else:
+            messagebox.showerror("Erro", str(resposta[1]))
+
+    def ver():
+        resposta = ver_destinos()
+        mostrar_resultado(caixa_resultado, resposta[1])
+
+    def consultar():
+        try:
+            id_destino = int(entrada_id.get())
+        except ValueError:
+            messagebox.showerror("Erro", "ID inválido.")
+            return
+        resposta = consultar_destinos(id_destino)
+        mostrar_resultado(caixa_resultado, resposta[1])
+
+    def atualizar():
+        try:
+            id_destino = int(entrada_id.get())
+        except ValueError:
+            messagebox.showerror("Erro", "ID inválido.")
+            return
+        resposta = atualizar_destino(
+            id_destino, entrada_pais.get(), entrada_cidade.get(),
+            entrada_tipo.get(), entrada_atracoes.get()
+        )
+        if resposta[0] == 200:
+            messagebox.showinfo("Sucesso", "Destino atualizado!")
+        else:
+            messagebox.showerror("Erro", str(resposta[1]))
+
+    def remover():
+        try:
+            id_destino = int(entrada_id.get())
+        except ValueError:
+            messagebox.showerror("Erro", "ID inválido.")
+            return
+        resposta = remover_destino(id_destino)
+        if resposta[0] == 200:
+            messagebox.showinfo("Sucesso", "Destino removido!")
+        else:
+            messagebox.showerror("Erro", str(resposta[1]))
+
+    frame_botoes = tk.Frame(frame_destinos)
+    frame_botoes.grid(row=1, column=0, columnspan=2, pady=5)
+    tk.Button(frame_botoes, text="Adicionar", width=12, command=adicionar).pack(side="left", padx=4)
+    tk.Button(frame_botoes, text="Ver Todos", width=12, command=ver).pack(side="left", padx=4)
+    tk.Button(frame_botoes, text="Consultar", width=12, command=consultar).pack(side="left", padx=4)
+    tk.Button(frame_botoes, text="Atualizar", width=12, command=atualizar).pack(side="left", padx=4)
+    tk.Button(frame_botoes, text="Remover",   width=12, command=remover).pack(side="left", padx=4)
+
+
+# ─── ABA HOTÉIS ──────────────────────────────────────────────────────────────
+
+def aba_hoteis(notebook):
+    frame_hoteis = ttk.Frame(notebook)
+    notebook.add(frame_hoteis, text="Hotéis")
+
+    frame_formulario = tk.LabelFrame(frame_hoteis, text="Dados do Hotel")
+    frame_formulario.grid(row=0, column=0, padx=10, pady=10, sticky="n")
+
+    entrada_id           = criar_campo(frame_formulario, "ID (consultar/atualizar/remover):", 0)
+    entrada_nome         = criar_campo(frame_formulario, "Nome:",            1)
+    entrada_localizacao  = criar_campo(frame_formulario, "Local:",           2)
+    entrada_preco_noite  = criar_campo(frame_formulario, "Preço/noite (€):", 3)
+    entrada_tipo         = criar_campo(frame_formulario, "Tipo:",            4)
+
+    caixa_resultado = tk.Text(frame_hoteis, width=50, height=20, state="disabled")
+    caixa_resultado.grid(row=0, column=1, padx=10, pady=10)
+
+    def adicionar():
+        resposta = adicionar_hotel(
+            entrada_nome.get(), entrada_localizacao.get(),
+            entrada_preco_noite.get(), entrada_tipo.get()
+        )
+        if resposta[0] == 201:
+            messagebox.showinfo("Sucesso", "Hotel adicionado!")
+        else:
+            messagebox.showerror("Erro", str(resposta[1]))
+
+    def ver():
+        resposta = ver_hoteis()
+        mostrar_resultado(caixa_resultado, resposta[1])
+
+    def consultar():
+        try:
+            id_hotel = int(entrada_id.get())
+        except ValueError:
+            messagebox.showerror("Erro", "ID inválido.")
+            return
+        resposta = consultar_hotel(id_hotel)
+        mostrar_resultado(caixa_resultado, resposta[1])
+
+    def atualizar():
+        try:
+            id_hotel = int(entrada_id.get())
+        except ValueError:
+            messagebox.showerror("Erro", "ID inválido.")
+            return
+        resposta = atualizar_hotel(
+            id_hotel, entrada_nome.get(), entrada_localizacao.get(),
+            entrada_preco_noite.get(), entrada_tipo.get()
+        )
+        if resposta[0] == 200:
+            messagebox.showinfo("Sucesso", "Hotel atualizado!")
+        else:
+            messagebox.showerror("Erro", str(resposta[1]))
+
+    def remover():
+        try:
+            id_hotel = int(entrada_id.get())
+        except ValueError:
+            messagebox.showerror("Erro", "ID inválido.")
+            return
+        resposta = remover_hotel(id_hotel)
+        if resposta[0] == 200:
+            messagebox.showinfo("Sucesso", "Hotel removido!")
+        else:
+            messagebox.showerror("Erro", str(resposta[1]))
+
+    frame_botoes = tk.Frame(frame_hoteis)
+    frame_botoes.grid(row=1, column=0, columnspan=2, pady=5)
+    tk.Button(frame_botoes, text="Adicionar", width=12, command=adicionar).pack(side="left", padx=4)
+    tk.Button(frame_botoes, text="Ver Todos", width=12, command=ver).pack(side="left", padx=4)
+    tk.Button(frame_botoes, text="Consultar", width=12, command=consultar).pack(side="left", padx=4)
+    tk.Button(frame_botoes, text="Atualizar", width=12, command=atualizar).pack(side="left", padx=4)
+    tk.Button(frame_botoes, text="Remover",   width=12, command=remover).pack(side="left", padx=4)
+
+
+# ─── ABA VOOS ────────────────────────────────────────────────────────────────
+
+def aba_voos(notebook):
+    frame_voos = ttk.Frame(notebook)
+    notebook.add(frame_voos, text="Voos")
+
+    frame_formulario = tk.LabelFrame(frame_voos, text="Dados do Voo")
+    frame_formulario.grid(row=0, column=0, padx=10, pady=10, sticky="n")
+
+    entrada_id           = criar_campo(frame_formulario, "ID (consultar/atualizar/remover):", 0)
+    entrada_companhia    = criar_campo(frame_formulario, "Companhia:",              1)
+    entrada_origem       = criar_campo(frame_formulario, "Origem:",                 2)
+    entrada_id_destino   = criar_campo(frame_formulario, "ID Destino:",             3)
+    entrada_data_partida = criar_campo(frame_formulario, "Partida (DD/MM/AAAA):",  4)
+    entrada_data_chegada = criar_campo(frame_formulario, "Chegada (DD/MM/AAAA):",  5)
+    entrada_preco        = criar_campo(frame_formulario, "Preço (€):",              6)
+
+    caixa_resultado = tk.Text(frame_voos, width=50, height=20, state="disabled")
+    caixa_resultado.grid(row=0, column=1, padx=10, pady=10)
+
+    def adicionar():
+        try:
+            id_destino = int(entrada_id_destino.get())
+        except ValueError:
+            messagebox.showerror("Erro", "ID Destino inválido.")
+            return
+        resposta = adicionar_voo(
+            entrada_companhia.get(), entrada_origem.get(), id_destino,
+            entrada_data_partida.get(), entrada_data_chegada.get(), entrada_preco.get()
+        )
+        if resposta[0] == 201:
+            messagebox.showinfo("Sucesso", "Voo adicionado!")
+        else:
+            messagebox.showerror("Erro", str(resposta[1]))
+
+    def ver():
+        resposta = ver_voos()
+        mostrar_resultado(caixa_resultado, resposta[1])
+
+    def consultar():
+        try:
+            id_voo = int(entrada_id.get())
+        except ValueError:
+            messagebox.showerror("Erro", "ID inválido.")
+            return
+        resposta = consultar_voo(id_voo)
+        mostrar_resultado(caixa_resultado, resposta[1])
+
+    def atualizar():
+        try:
+            id_voo     = int(entrada_id.get())
+            id_destino = int(entrada_id_destino.get())
+        except ValueError:
+            messagebox.showerror("Erro", "ID inválido.")
+            return
+        resposta = atualizar_voo(
+            id_voo, entrada_companhia.get(), entrada_origem.get(), id_destino,
+            entrada_data_partida.get(), entrada_data_chegada.get(), entrada_preco.get()
+        )
+        if resposta[0] == 200:
+            messagebox.showinfo("Sucesso", "Voo atualizado!")
+        else:
+            messagebox.showerror("Erro", str(resposta[1]))
+
+    def remover():
+        try:
+            id_voo = int(entrada_id.get())
+        except ValueError:
+            messagebox.showerror("Erro", "ID inválido.")
+            return
+        resposta = remover_voo(id_voo)
+        if resposta[0] == 200:
+            messagebox.showinfo("Sucesso", "Voo removido!")
+        else:
+            messagebox.showerror("Erro", str(resposta[1]))
+
+    frame_botoes = tk.Frame(frame_voos)
+    frame_botoes.grid(row=1, column=0, columnspan=2, pady=5)
+    tk.Button(frame_botoes, text="Adicionar", width=12, command=adicionar).pack(side="left", padx=4)
+    tk.Button(frame_botoes, text="Ver Todos", width=12, command=ver).pack(side="left", padx=4)
+    tk.Button(frame_botoes, text="Consultar", width=12, command=consultar).pack(side="left", padx=4)
+    tk.Button(frame_botoes, text="Atualizar", width=12, command=atualizar).pack(side="left", padx=4)
+    tk.Button(frame_botoes, text="Remover",   width=12, command=remover).pack(side="left", padx=4)
+
+
+# ─── ABA VIAGENS ─────────────────────────────────────────────────────────────
+
+def aba_viagens(notebook):
+    frame_viagens = ttk.Frame(notebook)
+    notebook.add(frame_viagens, text="Viagens")
+
+    frame_formulario = tk.LabelFrame(frame_viagens, text="Dados da Viagem")
+    frame_formulario.grid(row=0, column=0, padx=10, pady=10, sticky="n")
+
+    entrada_id          = criar_campo(frame_formulario, "ID (consultar/atualizar/remover):",    0)
+    entrada_id_voo_ida  = criar_campo(frame_formulario, "ID Voo Ida:",                         1)
+    entrada_id_voo_volta= criar_campo(frame_formulario, "ID Voo Volta (vazio se n/a):",        2)
+    entrada_nifs        = criar_campo(frame_formulario, "NIFs viajantes (separados por vírgula):", 3)
+    entrada_id_hotel    = criar_campo(frame_formulario, "ID Hotel:",                           4)
+    entrada_id_destino  = criar_campo(frame_formulario, "ID Destino:",                         5)
+
+    caixa_resultado = tk.Text(frame_viagens, width=50, height=20, state="disabled")
+    caixa_resultado.grid(row=0, column=1, padx=10, pady=10)
+
+    def _ler_campos_viagem():
+        try:
+            id_voo_ida   = int(entrada_id_voo_ida.get())
+            id_voo_volta = int(entrada_id_voo_volta.get()) if entrada_id_voo_volta.get().strip() else None
+            lista_nifs   = [nif.strip() for nif in entrada_nifs.get().split(",") if nif.strip()]
+            id_hotel     = int(entrada_id_hotel.get())
+            id_destino   = int(entrada_id_destino.get())
+            return id_voo_ida, id_voo_volta, lista_nifs, id_hotel, id_destino
+        except ValueError:
+            messagebox.showerror("Erro", "IDs inválidos. Verifique os campos.")
+            return None
+
+    def adicionar():
+        campos = _ler_campos_viagem()
+        if not campos:
+            return
+        resposta = adicionar_viagem(*campos)
+        if resposta[0] == 201:
+            messagebox.showinfo("Sucesso", "Viagem criada!")
+        else:
+            messagebox.showerror("Erro", str(resposta[1]))
+
+    def ver():
+        resposta = ver_viagens()
+        mostrar_resultado(caixa_resultado, resposta[1])
+
+    def consultar():
+        try:
+            id_viagem = int(entrada_id.get())
+        except ValueError:
+            messagebox.showerror("Erro", "ID inválido.")
+            return
+        resposta = consultar_viagem(id_viagem)
+        mostrar_resultado(caixa_resultado, resposta[1])
+
+    def atualizar():
+        try:
+            id_viagem = int(entrada_id.get())
+        except ValueError:
+            messagebox.showerror("Erro", "ID inválido.")
+            return
+        campos = _ler_campos_viagem()
+        if not campos:
+            return
+        resposta = atualizar_viagem(id_viagem, *campos)
+        if resposta[0] == 200:
+            messagebox.showinfo("Sucesso", "Viagem atualizada!")
+        else:
+            messagebox.showerror("Erro", str(resposta[1]))
+
+    def remover():
+        try:
+            id_viagem = int(entrada_id.get())
+        except ValueError:
+            messagebox.showerror("Erro", "ID inválido.")
+            return
+        resposta = remover_viagem(id_viagem)
+        if resposta[0] == 200:
+            messagebox.showinfo("Sucesso", "Viagem removida!")
+        else:
+            messagebox.showerror("Erro", str(resposta[1]))
+
+    frame_botoes = tk.Frame(frame_viagens)
+    frame_botoes.grid(row=1, column=0, columnspan=2, pady=5)
+    tk.Button(frame_botoes, text="Adicionar", width=12, command=adicionar).pack(side="left", padx=4)
+    tk.Button(frame_botoes, text="Ver Todas", width=12, command=ver).pack(side="left", padx=4)
+    tk.Button(frame_botoes, text="Consultar", width=12, command=consultar).pack(side="left", padx=4)
+    tk.Button(frame_botoes, text="Atualizar", width=12, command=atualizar).pack(side="left", padx=4)
+    tk.Button(frame_botoes, text="Remover",   width=12, command=remover).pack(side="left", padx=4)
+
+
+# ─── JANELA PRINCIPAL ────────────────────────────────────────────────────────
+
+def main():
+    logger.info("Sistema tkinter iniciado.")
+    janela_principal = tk.Tk()
+    janela_principal.title("Gestor de Viagens")
+    janela_principal.resizable(False, False)
+
+    notebook_abas = ttk.Notebook(janela_principal)
+    notebook_abas.pack(padx=10, pady=10, fill="both", expand=True)
+
+    aba_viajantes(notebook_abas)
+    aba_destinos(notebook_abas)
+    aba_hoteis(notebook_abas)
+    aba_voos(notebook_abas)
+    aba_viagens(notebook_abas)
+
+    janela_principal.mainloop()
+    logger.info("Sistema tkinter encerrado.")
+
+
+if __name__ == "__main__":
+    main()
